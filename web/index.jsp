@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Page</title>
     </head>
     <body>
         <h1>Lab 1</h1>
@@ -20,5 +20,11 @@
             <li><a href="PatientProfileServlet">Patient Profile</a></li>
         </ul>
 
+        <h1>Please login:</h1>
+        <form action="LoginServlet" method="POST">
+            Username: <input type="text" name="user_name"><br />
+            Password: <input type="password" name="password" />
+            <input type="submit" value="Submit" /><br /> 
+        </form>
     </body>
 </html>
