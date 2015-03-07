@@ -15,13 +15,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    
+    <%! String patientViewingProfile;%>
     <%! DoctorData doctorData;%>
     <% doctorData = (DoctorData) request.getAttribute("doctorData");%>
+    <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");%>
     <body>
+                
         <%
             if (doctorData != null) {
         %>
+        
+        <% 
+            if (patientViewingProfile.equals("1")) {  
+                doctorData.setEmailAddress(null);
+            }
+        %>
+        
         <h1><%= doctorData.getFirstName()%> <%= doctorData.getMiddleInitial()%>. <%= doctorData.getLastName()%></h1>
         <h2>General Information: </h2>
         <p>Gender: <%= doctorData.getGender()%></p>   
@@ -75,6 +84,16 @@
         <br>
         <h2>Reviews</h2>
         
+        <% 
+            if (patientViewingProfile.equals("1")) {
+        %>
+        <a href="google.ca">
+            Write Review
+        </a>
+        <% 
+            }
+        %>
+        
         <table cellspacing="20">
             <tr>
                 <th>
@@ -109,6 +128,11 @@
             }
         %>
         </table>
+        
+        
+        
+        
+        
         
         
         <%
