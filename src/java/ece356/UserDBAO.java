@@ -27,7 +27,7 @@ public class UserDBAO {
         return con;
     }
     
-    public static DoctorData queryDoctor(String userName)
+    public static DoctorData queryDoctor(String userName, boolean hideInformation)
            throws ClassNotFoundException, SQLException {
        Connection con = null;
        PreparedStatement pstmt = null;
@@ -49,7 +49,7 @@ public class UserDBAO {
            ret.lastName = resultSet.getString("last_name");
            ret.middleInitial = resultSet.getString("middle_initial");
            ret.gender = resultSet.getString("gender");
-           ret.emailAddress = resultSet.getString("email_address");
+           ret.emailAddress = (hideInformation)? null: resultSet.getString("email_address");
            ret.yearsLicensed = resultSet.getInt("yearsLicensed");
            ret.averageRating = resultSet.getInt("averageRating");
            ret.numberOfReviews = resultSet.getInt("numberOfReviews");

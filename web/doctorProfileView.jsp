@@ -26,8 +26,14 @@
         <h2>General Information: </h2>
         <p>Gender: <%= doctorData.getGender()%></p>   
         <p>Years Licensed: <%= doctorData.getYearsLicensed()%></p>   
-        <p>Average Rating: <%= doctorData.getAverageRating()%></p>   
+        <p>Average Rating: <%= doctorData.getAverageRating()%></p>
+        
+        <%
+            if (doctorData.getEmailAddress() != null) {
+        %>
         <p>Email Address: <%= doctorData.getEmailAddress()%></p>  
+        
+        <% } %>
         <br>
         <h2> Work Addresses </h2>
                 <table cellspacing="20">

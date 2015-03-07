@@ -44,7 +44,13 @@ public class DoctorProfileServlet extends HttpServlet {
 
     protected void query3helper(HttpServletRequest request, HttpServletResponse response)
             throws java.sql.SQLException, ClassNotFoundException {
-        DoctorData ret = UserDBAO.queryDoctor("bmsaadat");
+        String hideInformationString = request.getParameter("hideInformation");
+        boolean hideInformation = false;
+        if (hideInformationString.equals("1")) {
+            hideInformation = true;
+        }
+        System.out.println("HIDE INFORMATION %%%:: " + hideInformation);
+        DoctorData ret = UserDBAO.queryDoctor("bmsaadat", hideInformation);
         request.setAttribute("doctorData", ret);
     }
     
