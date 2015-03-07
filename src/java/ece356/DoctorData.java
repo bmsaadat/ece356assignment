@@ -12,8 +12,8 @@ import java.util.*;
 public class DoctorData extends UserData{
     String gender;
     int licenseYear;
-    List<String> specialization;
-    List<WorkAddressData> workAddresses;
+    ArrayList<String> specialization;
+    ArrayList<WorkAddressData> workAddresses;
 
     public String getGender() {
         return gender;
@@ -35,7 +35,7 @@ public class DoctorData extends UserData{
         return specialization;
     }
 
-    public void setSpecialization(List<String> specialization) {
+    public void setSpecialization(ArrayList<String> specialization) {
         this.specialization = specialization;
     }
 
@@ -43,7 +43,7 @@ public class DoctorData extends UserData{
         return workAddresses;
     }
 
-    public void setWorkAddresses(List<WorkAddressData> workAddresses) {
+    public void setWorkAddresses(ArrayList<WorkAddressData> workAddresses) {
         this.workAddresses = workAddresses;
     }
     
