@@ -11,9 +11,12 @@ import java.util.*;
  */
 public class DoctorData extends UserData{
     String gender;
-    int licenseYear;
-    ArrayList<String> specialization;
-    ArrayList<WorkAddressData> workAddresses;
+    ArrayList<String> specializationList;
+    ArrayList<WorkAddressData> workAddressList;
+    ArrayList<ReviewData> reviewList;
+    int yearsLicensed;
+    int averageRating;
+    int numberOfReviews;
 
     public String getGender() {
         return gender;
@@ -23,29 +26,51 @@ public class DoctorData extends UserData{
         this.gender = gender;
     }
 
-    public int getLicenseYear() {
-        return licenseYear;
+    public ArrayList<String> getSpecializationList() {
+        return specializationList;
     }
 
-    public void setLicenseYear(int licenseYear) {
-        this.licenseYear = licenseYear;
+    public void setSpecializationList(ArrayList<String> specializationList) {
+        this.specializationList = specializationList;
     }
 
-    public List<String> getSpecialization() {
-        return specialization;
+    public ArrayList<WorkAddressData> getWorkAddressList() {
+        return workAddressList;
     }
 
-    public void setSpecialization(ArrayList<String> specialization) {
-        this.specialization = specialization;
+    public void setWorkAddressList(ArrayList<WorkAddressData> workAddressList) {
+        this.workAddressList = workAddressList;
     }
 
-    public List<WorkAddressData> getWorkAddresses() {
-        return workAddresses;
+    public int getYearsLicensed() {
+        return yearsLicensed;
     }
 
-    public void setWorkAddresses(ArrayList<WorkAddressData> workAddresses) {
-        this.workAddresses = workAddresses;
+    public void setYearsLicensed(int yearsLicensed) {
+        this.yearsLicensed = yearsLicensed;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public int getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(int numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public ArrayList<ReviewData> getReviewList() {
+        return reviewList;
     }
     
-    
+    public void setReviewList(ArrayList<ReviewData> reviewList) {
+        this.reviewList = reviewList;
+    }   
 }

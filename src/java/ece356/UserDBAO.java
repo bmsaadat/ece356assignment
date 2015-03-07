@@ -1,6 +1,7 @@
 package ece356;
 
 import java.sql.*;
+import java.util.*;
 
 public class UserDBAO {
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306";
@@ -30,26 +31,86 @@ public class UserDBAO {
            throws ClassNotFoundException, SQLException {
        Connection con = null;
        PreparedStatement pstmt = null;
-       DoctorData ret;
-       System.out.println("TESTING");
+       DoctorData ret;    
        try {
            con = getConnection();
 
-           /* Build SQL query */
-           String query = "SELECT * FROM doctorView where username = " + userName;
-           
+           // Query for general doctor information
+           String query = "SELECT * FROM doctorView where username = ?";           
            pstmt = con.prepareStatement(query);          
+           pstmt.setString(1, userName);
 
            ResultSet resultSet;
            resultSet = pstmt.executeQuery();
-
+           resultSet.next();
            ret = new DoctorData();
            ret.userName = resultSet.getString("username");
            ret.firstName = resultSet.getString("first_name");
            ret.lastName = resultSet.getString("last_name");
-
+           ret.middleInitial = resultSet.getString("middle_initial");
+           ret.gender = resultSet.getString("gender");
+           ret.emailAddress = resultSet.getString("email_address");
+           ret.yearsLicensed = resultSet.getInt("yearsLicensed");
+           ret.averageRating = resultSet.getInt("averageRating");
+           ret.numberOfReviews = resultSet.getInt("numberOfReviews");
+           
+           // Query for work addresses of doctor
+           query = "SELECT * FROM doctorWorkAddress where doc_address_username = ?";           
+           pstmt = con.prepareStatement(query);          
+           pstmt.setString(1, userName);
+           resultSet = pstmt.executeQuery();
+           
+           ArrayList<WorkAddressData> workAddressList = new ArrayList<WorkAddressData>();
+           ret.workAddressList = workAddressList;
+           while (resultSet.next()) {
+                WorkAddressData workAddress = new WorkAddressData();
+                workAddress.city = resultSet.getString("city");
+                workAddress.state = resultSet.getString("state");
+                workAddress.postalCode = resultSet.getString("postal_code");
+                workAddress.streetName = resultSet.getString("street_name");
+                workAddress.streetNumber = resultSet.getInt("street_number");
+                workAddress.unitNumber = resultSet.getString("street_unit_number");
+                workAddressList.add(workAddress);
+            }
+           
+           // Query for specializations of doctor
+           query = "SELECT * FROM doctorSpecializationView where doc_spec_username = ?";           
+           pstmt = con.prepareStatement(query);          
+           pstmt.setString(1, userName);
+           resultSet = pstmt.executeQuery();
+           
+           ArrayList<String> specializationList = new ArrayList<String>();
+           ret.specializationList = specializationList;
+           while (resultSet.next()) {
+                String specialization = resultSet.getString("specTypeName");
+                specializationList.add(specialization);
+            }
+           
+           // Query for reviews of doctor
+           query = "SELECT * FROM review where doc_username = ? order by date desc";           
+           pstmt = con.prepareStatement(query);          
+           pstmt.setString(1, userName);
+           resultSet = pstmt.executeQuery();
+           
+           ArrayList<ReviewData> reviewList = new ArrayList<ReviewData>();
+           ret.reviewList = reviewList;
+           while (resultSet.next()) {
+                ReviewData review = new ReviewData();
+                review.comment = resultSet.getString("comment");
+                review.reviewId = resultSet.getString("reviewId");
+                review.doctorUsername = resultSet.getString("doc_username");
+                review.patientUsername = resultSet.getString("patient_username");
+                review.date = resultSet.getDate("date");
+                review.rating = resultSet.getInt("rating");
+                reviewList.add(review);
+            }
+           
            return ret;
-       } finally {
+       }   
+       catch (Exception e) {
+           System.out.println("EXCEPTION:%% " + e);
+       }
+       finally {
            if (pstmt != null) {
                pstmt.close();
            }
@@ -57,5 +118,6 @@ public class UserDBAO {
                con.close();
            }
        }
+       return null;
    }
 }
