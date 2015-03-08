@@ -27,6 +27,29 @@ public class UserDBAO {
         return con;
     }
     
+    public static void writeReview(ReviewData review) 
+           throws ClassNotFoundException, SQLException {
+        Connection con = null;
+       PreparedStatement pstmt = null;
+       DoctorData ret;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement("INSERT INTO review (doc_username, patient_username, date, rating, comment) VALUES (?, ?, CURDATE(), ?, ?);");
+            pstmt.setString(1, review.getDoctorUsername());
+            pstmt.setString(2, review.getPatientUsername());
+            pstmt.setInt(3, review.getRating());
+            pstmt.setString(4, review.getComment());
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+               pstmt.close();
+           }
+           if (con != null) {
+               con.close();
+           }
+       }
+    }
+    
     public static DoctorData queryDoctor(String userName)
            throws ClassNotFoundException, SQLException {
        Connection con = null;
