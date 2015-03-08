@@ -20,7 +20,8 @@
     </head>
     <%! String patientViewingProfile;%>
     <%! DoctorData doctorData;%>
-    <% doctorData = (DoctorData) request.getAttribute("doctorData");%>
+    <% doctorData = (DoctorData) request.getAttribute("doctorData");
+       session.setAttribute("docData", (DoctorData) doctorData); %>
     <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");%>
     <body>
         <div class="container">  
@@ -139,7 +140,6 @@
                     <%
                         for (ReviewData review : doctorData.getReviewList()) {
                     %>
-
                     <tr>
                         <td>
                             <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>

@@ -20,7 +20,9 @@
     <% String patientusername = request.getParameter("patientname"); %>
     <% String date = request.getParameter("date"); %>
     <% String comment = request.getParameter("comment"); %>
-    <% String rating = request.getParameter("rating"); %>    
+    <% String rating = request.getParameter("rating"); %>  
+    <% String reviewID = request.getParameter("reviewid"); %>
+    <% DoctorData doctorData = (DoctorData) session.getAttribute("docData");%>
     <body>
        <div class="container">  
         <h2 class="page-header">Review: </h2>
@@ -35,9 +37,46 @@
           <dd><%= rating%></dd>
           <dt>Comment: </dt>
           <dd><%= comment%></dd>
+          <dt>reviewID: </dt>
+          <dd><%= reviewID%></dd>
         </dl>
-        
-        
-        </div>
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Rating
+                        </th>
+                        <th>
+                            Reviewed By
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        for (ReviewData review : doctorData.getReviewList()) {
+                    %>
+                    <tr>
+                        <td>
+                            <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
+                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>&reviewid=<%= review.getReviewId()%>">
+                                <%= review.getDate()%>
+                            </a>
+                        </td>
+                        <td>
+                            <%= review.getRating()%>
+                        </td>
+                        <td>
+                            <%= review.getPatientUsername()%>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                </tbody>
+            </table>
+     </div>
     </body>
 </html>
