@@ -3,7 +3,8 @@
     Created on : Mar 7, 2015, 7:32:47 PM
     Author     : abhisheksisodia
 --%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.*"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="ece356.DoctorData"%>
 <%@page import="ece356.WorkAddressData"%>
 <%@page import="ece356.ReviewData"%>
@@ -23,6 +24,7 @@
     <% String rating = request.getParameter("rating"); %>  
     <% String reviewID = request.getParameter("reviewid"); %>
     <% DoctorData doctorData = (DoctorData) session.getAttribute("docData");%>
+    <% ArrayList<ReviewData> reviews = doctorData.getReviewList(); %>
     <body>
        <div class="container">  
         <h2 class="page-header">Review: </h2>
@@ -37,46 +39,49 @@
           <dd><%= rating%></dd>
           <dt>Comment: </dt>
           <dd><%= comment%></dd>
-          <dt>reviewID: </dt>
-          <dd><%= reviewID%></dd>
         </dl>
-        <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Rating
-                        </th>
-                        <th>
-                            Reviewed By
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+        <% boolean nextReview = false; %>
+        <% boolean prevReview = false; %>
                     <%
                         for (ReviewData review : doctorData.getReviewList()) {
                     %>
-                    <tr>
-                        <td>
-                            <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
-                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>&reviewid=<%= review.getReviewId()%>">
-                                <%= review.getDate()%>
-                            </a>
-                        </td>
-                        <td>
-                            <%= review.getRating()%>
-                        </td>
-                        <td>
-                            <%= review.getPatientUsername()%>
-                        </td>
-                    </tr>
+                    <% SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                       Date currentReviewDate = format.parse(request.getParameter("date")); %>
+                    <%
+                        if (!nextReview) {
+                    %>
+                    <%
+                        if (currentReviewDate.before(review.getDate())) {
+                    %>
+                        <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
+                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>">
+                        <button class="btn btn-default pull-right" type="submit" data-toggle="modal">Next Review</button></a></a>
+                        <% nextReview = true; %>
                     <%
                         }
                     %>
-                </tbody>
-            </table>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (!prevReview) {
+                    %>
+                    <%
+                        if ((currentReviewDate.after(review.getDate()))) {
+                    %>
+                        <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
+                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>">
+                        <button class="btn btn-default pull-left" type="submit" data-toggle="modal">Previous Review</button></a>
+                        <% prevReview = true; %>
+                    <% 
+                        }
+                    %> 
+                    <%
+                        }
+                    %>
+                    <%
+                        }
+                    %>
      </div>
     </body>
 </html>
