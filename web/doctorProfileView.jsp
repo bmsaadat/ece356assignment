@@ -11,6 +11,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -20,7 +23,7 @@
     <% doctorData = (DoctorData) request.getAttribute("doctorData");%>
     <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");%>
     <body>
-                
+       <div class="container">  
         <%
             if (doctorData != null) {
         %>
@@ -31,22 +34,47 @@
             }
         %>
         
-        <h1><%= doctorData.getFirstName()%> <%= doctorData.getMiddleInitial()%>. <%= doctorData.getLastName()%></h1>
-        <h2>General Information: </h2>
-        <p>Gender: <%= doctorData.getGender()%></p>   
-        <p>Years Licensed: <%= doctorData.getYearsLicensed()%></p>   
-        <p>Average Rating: <%= doctorData.getAverageRating()%></p>
+        <h1>Dr. <%= doctorData.getFirstName()%> <%= doctorData.getMiddleInitial()%>. <%= doctorData.getLastName()%></h1>
+        <h2 class="page-header">General Information: </h2>
         
-        <%
+        <dl class="dl-horizontal">
+  <dt>Gender: </dt>
+  <dd><%= doctorData.getGender()%></dd>
+  
+  <dt>Years Licensed: </dt>
+  <dd><%= doctorData.getYearsLicensed()%></dd>
+  
+  <dt>Average Rating: </dt>
+  <dd><%= doctorData.getAverageRating()%></dd>
+  <%
             if (doctorData.getEmailAddress() != null) {
         %>
-        <p>Email Address: <%= doctorData.getEmailAddress()%></p>  
+  <dt>Email Address </dt>
+  <dd><%= doctorData.getEmailAddress()%></dd>
+  <% } %>
+</dl>
         
-        <% } %>
-        <br>
-        <h2> Work Addresses </h2>
-                <table cellspacing="20">
-
+        
+        
+        <h2 class="page-header"> Work Addresses </h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Street
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Province
+                </th>
+                <th>
+                    Postal Code
+                </th>
+            </tr>
+            </thead>
+            <tbody>
         <%
             for (WorkAddressData workAddress : doctorData.getWorkAddressList()) {
         %>
@@ -67,9 +95,10 @@
         <%
             }
         %>
+            </tbody>
         </table>
 
-        <h2> Areas of Specialization </h2>
+        <h2 class="page-header"> Areas of Specialization </h2>
         <ul>
         <%
             for (String specialization : doctorData.getSpecializationList()) {
@@ -82,19 +111,18 @@
         %>
         </ul>
         <br>
-        <h2>Reviews</h2>
+        <h2 class="page-header">Reviews
         
         <% 
             if (patientViewingProfile.equals("1")) {
         %>
-        <a href="google.ca">
-            Write Review
-        </a>
+        <button class="btn btn-default pull-right" type="submit">Write Review</button>
         <% 
             }
         %>
-        
-        <table cellspacing="20">
+        </h2>
+        <table class="table">
+            <thead>
             <tr>
                 <th>
                     Date
@@ -106,7 +134,8 @@
                     Reviewed By
                 </th>
             </tr>
-        
+            </thead>
+            <tbody>
         <%
             for (ReviewData review : doctorData.getReviewList()) {
         %>
@@ -127,6 +156,7 @@
         <%
             }
         %>
+            </tbody>
         </table>
         
         
@@ -138,7 +168,10 @@
         <%
             }
         %>
-        
-        
+       </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
