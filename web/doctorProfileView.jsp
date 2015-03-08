@@ -142,7 +142,8 @@
         
         <tr>
             <td>
-                <a href="google.ca">
+                <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
+                   &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>">
                 <%= review.getDate()%>
                 </a>
             </td>
