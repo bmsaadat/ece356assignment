@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.*;
 /**
  *
  * @author behrozsaadat
@@ -31,7 +31,26 @@ public class WriteReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Hardcoded reviewer for now
+        String doctorUsername = request.getParameter("doctorUsername");
+        String patientUsername = "bmsaadat_patient";        
+        String rating = request.getParameter("rating");
+        String comment = request.getParameter("comment");
+        ReviewData review = new ReviewData();
+        review.comment = comment;
+        review.doctorUsername = doctorUsername;
+        review.patientUsername = patientUsername;
+        review.rating = Integer.parseInt(rating);
+        review.date = new Date();
         
+        String url;
+        try{
+            UserDBAO.writeReview(review);
+            url = "/index.jsp";
+        } catch (Exception e) {
+            url = "/error.jsp";
+        }
+        getServletContext().getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
