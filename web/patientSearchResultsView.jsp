@@ -22,6 +22,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>
                             Username
                         </th>
@@ -42,6 +43,10 @@
                     <% for (PatientData patient : patientList) {%>
                     
                     <tr>
+                        <td>
+                            <a href="index.jsp">
+                        <button class="btn btn-default btn-sm" type="submit" data-toggle="modal">Add Friend</button></a></a>
+                        </td>
                         <td>
                             <%= patient.getUserName()%>
                         </td>
