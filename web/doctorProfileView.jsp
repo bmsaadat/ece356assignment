@@ -22,7 +22,8 @@
     <%! DoctorData doctorData;%>
     <% doctorData = (DoctorData) request.getAttribute("doctorData");
        session.setAttribute("docData", (DoctorData) doctorData); %>
-    <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");%>
+    <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");
+        session.setAttribute("patientViewingDoctor", patientViewingProfile); %>
     <body>
         <div class="container">  
             <%
