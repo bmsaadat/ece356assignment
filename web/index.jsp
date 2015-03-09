@@ -16,8 +16,8 @@
         <ul>
             <li><a href="user_data_form.jsp">Exercise 2: Enter, save, display data</a></li>
             <li><a href="DBTestServlet">Exercise 3: Connect to the database</a></li>
-            <li><a href="DoctorProfileServlet">Doctor Profile</a></li>
-            <li><a href="PatientProfileServlet">Patient Profile</a></li>
+            <li><a href="DoctorProfileServlet?hideInformation=0">View Own Doctor Profile</a></li>
+            <li><a href="DoctorProfileServlet?hideInformation=1">Patient Views Doctor Profile</a></li>
         </ul>
 
         <h1>Please login:</h1>
