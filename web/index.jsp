@@ -18,6 +18,7 @@
             <li><a href="DBTestServlet">Exercise 3: Connect to the database</a></li>
             <li><a href="DoctorProfileServlet?hideInformation=0">View Own Doctor Profile</a></li>
             <li><a href="DoctorProfileServlet?hideInformation=1">Patient Views Doctor Profile</a></li>
+            <li><a href="patientSearchView.jsp">Search For Patients</a></li>
         </ul>
 
     </body>
