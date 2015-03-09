@@ -82,6 +82,8 @@
                     <%
                         }
                     %>
+                    <a href="doctorProfileView.jsp">
+                    <button class="btn btn-default pull-left" type="submit" data-toggle="modal">Back to Profile</button></a>
      </div>
     </body>
 </html>
