@@ -32,7 +32,6 @@ public class UserDBAO {
             throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        DoctorData ret;
         try {
             con = getConnection();
             pstmt = con.prepareStatement("INSERT INTO review (doc_username, patient_username, date, rating, comment) VALUES (?, ?, NOW(), ?, ?);");
@@ -41,6 +40,56 @@ public class UserDBAO {
             pstmt.setInt(3, review.getRating());
             pstmt.setString(4, review.getComment());
             pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+    
+    public static void addFriend(PatientData friendA, PatientData friendB)
+            throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = getConnection();
+            
+            // Find if this request is already there
+            String query = "SELECT * FROM friend where (sent_username = ? AND received_username = ?) OR (sent_username = ? AND received_username = ?)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, friendA.getUserName());
+            pstmt.setString(2, friendB.getUserName());
+            pstmt.setString(3, friendB.getUserName());
+            pstmt.setString(4, friendA.getUserName());
+
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            resultSet.next();
+            
+            if (resultSet == null) {
+                pstmt = con.prepareStatement("INSERT INTO friend (sent_username, received_username) VALUES (?, ?);");
+                pstmt.setString(1, friendA.getUserName());
+                pstmt.setString(2, friendB.getUserName());
+                pstmt.executeUpdate();
+            } else {
+                boolean isAccepted = resultSet.getBoolean("isAccepted");
+                if (!isAccepted) {
+                    String update = "UPDATE friend SET isAccepted = ? where (sent_username = ? AND received_username = ?) OR (sent_username = ? AND received_username = ?);";
+                    pstmt = con.prepareStatement(update);
+                    pstmt.setBoolean(1, true);
+                    pstmt.setString(2, friendA.getUserName());
+                    pstmt.setString(3, friendB.getUserName());
+                    pstmt.setString(4, friendB.getUserName());
+                    pstmt.setString(5, friendA.getUserName());
+                    pstmt.executeUpdate();
+                }
+            }
+            
+            
+            
         } finally {
             if (pstmt != null) {
                 pstmt.close();
