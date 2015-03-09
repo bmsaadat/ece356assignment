@@ -34,7 +34,7 @@ public class UserDBAO {
        DoctorData ret;
         try {
             con = getConnection();
-            pstmt = con.prepareStatement("INSERT INTO review (doc_username, patient_username, date, rating, comment) VALUES (?, ?, CURDATE(), ?, ?);");
+            pstmt = con.prepareStatement("INSERT INTO review (doc_username, patient_username, date, rating, comment) VALUES (?, ?, NOW(), ?, ?);");
             pstmt.setString(1, review.getDoctorUsername());
             pstmt.setString(2, review.getPatientUsername());
             pstmt.setInt(3, review.getRating());

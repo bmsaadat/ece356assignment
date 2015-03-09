@@ -46,7 +46,7 @@ public class WriteReviewServlet extends HttpServlet {
         String url;
         try{
             UserDBAO.writeReview(review);
-            url = "/index.jsp";
+            url = "/DoctorProfileServlet";
         } catch (Exception e) {
             url = "/error.jsp";
         }
