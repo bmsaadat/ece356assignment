@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ece356;
+import java.sql.Timestamp;
 import java.util.*;
 /**
  *
@@ -13,7 +14,7 @@ public class PatientData extends UserData{
     String city;
     String state;
     int numberOfReviews;
-    Date lastReviewDate;
+    Timestamp lastReviewDate;
     
     public String getCity() {
         return city;
@@ -43,7 +44,7 @@ public class PatientData extends UserData{
         return lastReviewDate;
     }
 
-    public void setLastReviewDate(Date lastReviewDate) {
+    public void setLastReviewDate(Timestamp lastReviewDate) {
         this.lastReviewDate = lastReviewDate;
     }
     

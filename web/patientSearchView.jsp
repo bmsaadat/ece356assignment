@@ -19,15 +19,15 @@
             <form id="searchPatients" action="PatientSearchServlet" method="POST">
                 <div class="form-group">
                     <label for="username">User Name:</label>
-                    <input type="text" class="form-control" name="usernameInput" placeholder="Enter username">
+                    <input type="text" class="form-control" name="username" placeholder="Enter username">
                 </div>
                 <div class="form-group">
                     <label for="province">Province:</label>
-                    <input type="text" class="form-control" name="provinceInput" placeholder="Enter province">
+                    <input type="text" class="form-control" name="state" placeholder="Enter province">
                 </div>
                 <div class="form-group">
                     <label for="city">City:</label>
-                    <input type="text" class="form-control" name="cityInput" placeholder="Enter city">
+                    <input type="text" class="form-control" name="city" placeholder="Enter city">
                 </div>                
                 <button type="submit" form="searchPatients" class="btn btn-default">Submit</button>
             </form>

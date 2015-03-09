@@ -143,30 +143,67 @@ public class UserDBAO {
         return null;
     }
 
-    public static ArrayList<PatientData> queryPatients(String userName, String state, String city)
+    public static ArrayList<PatientData> queryPatients(String username, String state, String city)
             throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ArrayList<PatientData> ret;
         try {
             con = getConnection();
+            
+            ArrayList<String> keys = new ArrayList();
+            ArrayList<String> values = new ArrayList();
+            if (username != null && username != "") {
+                keys.add("patient_username");
+                values.add(username);
+            }
+            
+            if (state != null && state != "") {
+                keys.add("home_address_state");
+                values.add(state);
+            }
+            
+            if (city != null && city != "") {
+                keys.add("home_address_city");
+                values.add(city);
+            }
+            
 
             // Query for general doctor information
-            String query = "SELECT * FROM doctorView where username = ?";
+            String query = "SELECT * FROM patientSearchView";
+            if (!keys.isEmpty()) {
+                query = query + " where";
+                for (String key : keys) {
+                    query = query + " " + key + " LIKE ?";
+                    query += " AND";
+                }
+                query = query.substring(0, query.length()-4);
+                System.out.println(query);
+            }
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, userName);
+            
+            if (!values.isEmpty()) {
+                int count = 1;
+                for(String value : values) {
+                    pstmt.setString(count, "%" + value + "%");
+                    count++;
+                }
+            }
 
             ResultSet resultSet;
-            resultSet = pstmt.executeQuery();
-            /*resultSet.next();
-            ret = new PatientData();
-            ret.userName = resultSet.getString("username");
-            ret.firstName = resultSet.getString("first_name");
-            ret.lastName = resultSet.getString("last_name");
-            ret.middleInitial = resultSet.getString("middle_initial");
-            ret.emailAddress = resultSet.getString("email_address");*/
+            resultSet = pstmt.executeQuery();           
 
             ret = new ArrayList();
+
+            while (resultSet.next()) {
+                PatientData patient = new PatientData();
+                patient.userName = resultSet.getString("patient_username");
+                patient.city = resultSet.getString("home_address_city");
+                patient.state = resultSet.getString("home_address_state");
+                patient.numberOfReviews = resultSet.getInt("numberOfReviews");
+                patient.lastReviewDate = resultSet.getTimestamp("lastReviewDate");
+                ret.add(patient);
+            }
 
             return ret;
         } catch (Exception e) {

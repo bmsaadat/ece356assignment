@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author behrozsaadat
  */
-@WebServlet(name = "PatientProfileServlet", urlPatterns = {"/PatientProfileServlet"})
+@WebServlet(name = "PatientSearchServlet", urlPatterns = {"/PatientSearchServlet"})
 public class PatientSearchServlet extends HttpServlet {
 
     /**
@@ -35,7 +35,7 @@ public class PatientSearchServlet extends HttpServlet {
         String url;
         try {
             query3helper(request, response);
-            url = "/patientProfileView.jsp";
+            url = "/patientSearchResultsView.jsp";
         }
         catch (Exception e) {
             url = "/error.jsp";
@@ -45,7 +45,10 @@ public class PatientSearchServlet extends HttpServlet {
 
     protected void query3helper(HttpServletRequest request, HttpServletResponse response)
             throws java.sql.SQLException, ClassNotFoundException {
-        ArrayList<PatientData> ret = UserDBAO.queryPatients("bmsaadat", "ontario", "london");
+        String username = request.getParameter("username");
+        String city = request.getParameter("city");   
+        String state = request.getParameter("state");
+        ArrayList<PatientData> ret = UserDBAO.queryPatients(username, state, city);        
         request.setAttribute("patientList", ret);
     }
 
