@@ -12,6 +12,10 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>ece356.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SyncDataServlet</servlet-name>
+        <servlet-class>ece356.SyncDataServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserDataServlet</servlet-name>
         <url-pattern>/UserDataServlet</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SyncDataServlet</servlet-name>
+        <url-pattern>/SyncDataServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

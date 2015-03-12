@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
@@ -14,8 +15,7 @@
     <body>
         <h1>Lab 1</h1>
         <ul>
-            <li><a href="user_data_form.jsp">Exercise 2: Enter, save, display data</a></li>
-            <li><a href="DBTestServlet">Exercise 3: Connect to the database</a></li>
+            <li><a href="SyncDataServlet">Sync Data</a></li>
             <li><a href="DoctorProfileServlet?hideInformation=0">View Own Doctor Profile</a></li>
             <li><a href="DoctorProfileServlet?hideInformation=1">Patient Views Doctor Profile</a></li>
             <li><a href="patientSearchView.jsp">Search For Patients</a></li>
