@@ -16,13 +16,14 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Doctor Profile</title>
     </head>
     <%! String patientViewingProfile;%>
     <%! DoctorData doctorData;%>
     <% doctorData = (DoctorData) request.getAttribute("doctorData");
        session.setAttribute("docData", (DoctorData) doctorData); %>
-    <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");%>
+    <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");
+        session.setAttribute("patientViewingDoctor", patientViewingProfile); %>
     <body>
         <div class="container">  
             <%
@@ -143,7 +144,7 @@
                     <tr>
                         <td>
                             <a href="doctorReviewView.jsp?docname=<%= review.getDoctorUsername()%>&patientname=<%= review.getPatientUsername()%>&date=<%= review.getDate()%>
-                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>">
+                            &rating=<%= review.getRating()%>&comment=<%= review.getComment()%>&index=<%= doctorData.getReviewList().indexOf(review)%>">
                                 <%= review.getDate()%>
                             </a>
                         </td>

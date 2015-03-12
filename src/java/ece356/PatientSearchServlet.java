@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ece356;
+import java.util.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+
 /**
  *
  * @author behrozsaadat
  */
-@WebServlet(name = "WriteReviewServlet", urlPatterns = {"/WriteReviewServlet"})
-public class WriteReviewServlet extends HttpServlet {
+@WebServlet(name = "PatientSearchServlet", urlPatterns = {"/PatientSearchServlet"})
+public class PatientSearchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,27 +31,25 @@ public class WriteReviewServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Hardcoded reviewer for now
-        String doctorUsername = request.getParameter("doctorUsername");
-        String patientUsername = "bmsaadat_patient";        
-        String rating = request.getParameter("rating");
-        String comment = request.getParameter("comment");
-        ReviewData review = new ReviewData();
-        review.comment = comment;
-        review.doctorUsername = doctorUsername;
-        review.patientUsername = patientUsername;
-        review.rating = Integer.parseInt(rating);
-        review.date = new Date();
-        
+            throws ServletException, IOException  {
         String url;
-        try{
-            UserDBAO.writeReview(review);
-            url = "/DoctorProfileServlet";
-        } catch (Exception e) {
+        try {
+            query3helper(request, response);
+            url = "/patientSearchResultsView.jsp";
+        }
+        catch (Exception e) {
             url = "/error.jsp";
         }
         getServletContext().getRequestDispatcher(url).forward(request, response);
+    }
+
+    protected void query3helper(HttpServletRequest request, HttpServletResponse response)
+            throws java.sql.SQLException, ClassNotFoundException {
+        String username = request.getParameter("username");
+        String city = request.getParameter("city");   
+        String state = request.getParameter("state");
+        ArrayList<PatientData> ret = UserDBAO.queryPatients(username, state, city);        
+        request.setAttribute("patientList", ret);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
