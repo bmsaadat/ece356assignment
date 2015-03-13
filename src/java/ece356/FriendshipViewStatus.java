@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -45,8 +46,9 @@ public class FriendshipViewStatus extends HttpServlet {
 
     protected void queryhelper(HttpServletRequest request, HttpServletResponse response)
             throws java.sql.SQLException, ClassNotFoundException {
-        //UserData user = session.getAttribute("userData"); 
-        ArrayList<UserData> ret = UserDBAO.queryFriendRequests("abishek_patient");
+        HttpSession session = request.getSession();
+        UserData user = (UserData) session.getAttribute("userData"); 
+        ArrayList<UserData> ret = UserDBAO.queryFriendRequests(user.getUserName());
         request.setAttribute("userData", ret);
     }
 
