@@ -9,7 +9,8 @@ public class UserData {
     String middleInitial;
     String lastName;
     String emailAddress;
-
+    String userType;
+    
     public String getUserName() {
         return userName;
     }
@@ -66,4 +67,12 @@ public class UserData {
         this.emailAddress = emailAddress;
     }
 
+     public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }   
+    
 }
