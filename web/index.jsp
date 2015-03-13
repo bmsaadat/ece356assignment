@@ -19,6 +19,7 @@
             <li><a href="DoctorProfileServlet?hideInformation=0">View Own Doctor Profile</a></li>
             <li><a href="DoctorProfileServlet?hideInformation=1">Patient Views Doctor Profile</a></li>
             <li><a href="patientSearchView.jsp">Search For Patients</a></li>
+            <li><a href="FriendshipViewStatus">View Friend Requests</a></li>
         </ul>
 
         <h1>Please login:</h1>
