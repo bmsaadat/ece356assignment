@@ -33,8 +33,8 @@
     <body>
         <%
             if(session.getAttribute("userData") == null){
-                //response.sendRedirect("index.jsp");
-                //return; 
+                response.sendRedirect("index.jsp");
+                return; 
             }
         %>
         

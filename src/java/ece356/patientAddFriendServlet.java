@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 /**
  *
@@ -33,10 +35,11 @@ public class patientAddFriendServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Hardcoded friends
-        String friendA = "bmsaadat_patient";
+        HttpSession session = request.getSession();
+        String friendA = ((UserData)session.getAttribute("userData")).getUserName();
         String friendB = request.getParameter("user");        
         String message;
-        try{
+        try {
             FriendShipStatus friendStatus = UserDBAO.addFriend(friendA, friendB);
             switch (friendStatus) {
                 case ALREADY_FRIENDS: 
