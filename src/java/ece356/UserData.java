@@ -1,5 +1,7 @@
 package ece356;
 
+import java.util.ArrayList;
+
 public class UserData {
     
     String userName;
@@ -10,6 +12,16 @@ public class UserData {
     String lastName;
     String emailAddress;
     String userType;
+    ArrayList<UserData> patientViewRequestsList;
+
+    public ArrayList<UserData> getPatientViewRequestsList() {
+        return patientViewRequestsList;
+    }
+
+    public void setPatientViewRequestsList(ArrayList<UserData> patientViewRequestsList) {
+        this.patientViewRequestsList = patientViewRequestsList;
+    }
+
     
     public String getUserName() {
         return userName;

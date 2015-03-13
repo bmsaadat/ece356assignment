@@ -535,4 +535,42 @@ public class UserDBAO {
         }
         return null;
     }
+    
+    public static ArrayList<UserData> queryFriendRequests(String userName)
+        throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = getConnection();
+
+            // Query for general doctor information
+            String query = "select friend.sent_username, friend.recieved_username, user.email_address from friend " +
+            "inner join user on friend.sent_username = user.username where friend.isAccepted = 0 " +
+            "AND friend.recieved_username = ?;";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, userName);
+
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            
+            ArrayList<UserData> patientViewRequestList = new ArrayList<UserData>();
+            while (resultSet.next()) {
+                UserData user = new UserData();
+                user.userName = resultSet.getString("sent_username");
+                user.emailAddress = resultSet.getString("email_address");
+                patientViewRequestList.add(user);
+            }
+            return patientViewRequestList;
+        } catch (Exception e) {
+            System.out.println("EXCEPTION:%% " + e);
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
 }
