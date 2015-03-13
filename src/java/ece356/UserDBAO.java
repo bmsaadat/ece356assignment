@@ -183,6 +183,95 @@ public class UserDBAO {
             }
        }
     }
+    
+    public static String getSalt(String username)
+             throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        UserData ret;
+        try 
+        {
+            con = getConnection();
+            String query = "select COUNT(*)as numRecords, password_salt from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            resultSet.next();
+            
+            if(resultSet.getInt("numRecords") > 0)
+            {
+                return resultSet.getString("password_salt"); 
+            }
+            else
+                return null; 
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("EXCEPTION:%% " + e);
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+                pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+        }
+        return null;
+    }
+    
+    public static UserData queryUser(String username, String password, String salt)
+            throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        UserData ret;
+        try 
+        {
+            con = getConnection();
+            String query = "select COUNT(*) as numRecords, username, first_name, middle_initial, last_name, email_address, userType from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ? and user.password_hash = SHA2(CONCAT('"+salt+"', '"+password+"'), 256)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            resultSet.next();
+            ret = new UserData();
+            
+            if(resultSet.getInt("numRecords") > 0)
+            {
+                ret.userName = resultSet.getString("username");
+                ret.firstName = resultSet.getString("first_name");
+                ret.lastName = resultSet.getString("last_name");
+                ret.middleInitial = resultSet.getString("middle_initial");
+                ret.emailAddress = resultSet.getString("email_address");
+                ret.userType = resultSet.getString("userType");
+            }
+            else
+            {
+                ret = null; 
+            }
+            return ret;
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("EXCEPTION:%% " + e);
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+                pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+        }
+        return null;
+    }
 
     public static void writeReview(ReviewData review)
             throws ClassNotFoundException, SQLException {
@@ -208,7 +297,7 @@ public class UserDBAO {
     }
 
     public static DoctorData queryDoctor(String userName)
-            throws ClassNotFoundException, SQLException {
+        throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         DoctorData ret;

@@ -11,10 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 /**
  *
- * @author Sabashan
+ * @author Sabashan Ragavan
  */
 public class LoginServlet extends HttpServlet {
 
@@ -29,26 +31,51 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
-            UserData useData = new UserData(); 
-            useData.setUserName(request.getParameter("user_name"));
-            useData.setPasswordHash(request.getParameter("password"));
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String url;
+        try {
+            url = query3helper(request, response);
         }
+        catch (Exception e) {
+            url = "/error.jsp";
+        }
+        getServletContext().getRequestDispatcher(url).forward(request, response);
     }
 
+        protected String query3helper(HttpServletRequest request, HttpServletResponse response)
+            throws java.sql.SQLException, ClassNotFoundException {
+            String username = request.getParameter("user_name"); 
+            String password = request.getParameter("password"); 
+            String salt = UserDBAO.getSalt(username); 
+            String url = "/index.jsp"; 
+            if(salt != null)
+            {
+                UserData ret = UserDBAO.queryUser(username, password, salt);
+                if(ret != null)
+                {
+                    request.setAttribute("userData", ret);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userData", ret);
+                    
+                    if(ret.userType.equals("doctor"))
+                    {
+                        url = "/DoctorProfileServlet?hideInformation=0"; 
+                    }
+                    else if(ret.userType.equals("patient"))
+                    {
+                        url = "/patientSearchView.jsp"; 
+                    }
+                }
+                else
+                {
+                    url = "/index.jsp";
+                }
+            }
+            else
+            {
+                url = "/index.jsp";
+            } 
+            return url;    
+        }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

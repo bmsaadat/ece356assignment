@@ -27,6 +27,13 @@
     <% int index = index = Integer.parseInt(str);%>
     <% String hideInformation = (String) session.getAttribute("patientViewingDoctor"); %>
     <body>
+            <%
+                if(session.getAttribute("userData") == null){
+                    response.sendRedirect("index.jsp");
+                    return; 
+                }
+            %>
+        
         <div class="container">  
             <form action="DoctorProfileServlet?hideInformation=<%= hideInformation%>" method="post">
                   <button class="btn btn-default pull-left" type="submit" data-toggle="modal">Back to Profile</button>

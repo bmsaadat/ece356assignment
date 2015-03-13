@@ -14,6 +14,13 @@
         <title>Patient Search</title>
     </head>
     <body>
+        <%
+            if(session.getAttribute("userData") == null){
+                response.sendRedirect("index.jsp");
+                return; 
+            }
+        %>
+        
         <div class="container">  
             <h2 class="page-header">Search For Patients: </h2>
             <form id="searchPatients" action="PatientSearchServlet" method="POST">

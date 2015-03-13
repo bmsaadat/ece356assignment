@@ -27,6 +27,11 @@
     <body>
         <div class="container">  
             <%
+                if(session.getAttribute("userData") == null){
+                    response.sendRedirect("index.jsp");
+                    return; 
+                }
+        
                 if (doctorData != null) {
             %>
 
