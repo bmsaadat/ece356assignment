@@ -44,7 +44,15 @@
                 }
             %>
 
-            <h1>Dr. <%= doctorData.getFirstName()%> <%= user.getMiddleInitial()%><% if(user.getMiddleInitial() != null && doctorData.getMiddleInitial() != "") { %> . <% }%><%= doctorData.getLastName()%></h1>
+            <h1>
+                Dr. <%= doctorData.getFirstName()%> 
+                <% 
+                if(doctorData.getMiddleInitial() != null && !doctorData.getMiddleInitial().equals("")) { 
+                %>
+                <%= doctorData.getMiddleInitial()%>. 
+                <% } %>
+                <%= doctorData.getLastName()%>
+            </h1>
             <h2 class="page-header">General Information: </h2>
 
             <dl class="dl-horizontal">

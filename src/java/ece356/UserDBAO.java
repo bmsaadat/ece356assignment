@@ -10,7 +10,7 @@ public class UserDBAO {
 
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306";
     //public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
-    public static final String nid = "sragavan";
+    public static final String nid = "bmsaadat";
     public static final String user = "user_" + nid;
     public static final String pwd = "user_" + nid;
 
