@@ -4,6 +4,7 @@
     Author     : behrozsaadat
 --%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="ece356.UserData"%>
 <%@page import="ece356.DoctorData"%>
 <%@page import="ece356.WorkAddressData"%>
 <%@page import="ece356.ReviewData"%>
@@ -20,28 +21,30 @@
     </head>
     <%! String patientViewingProfile;%>
     <%! DoctorData doctorData;%>
-    <% doctorData = (DoctorData) request.getAttribute("doctorData");
+    <%! UserData user;%>
+    <% user = (UserData) session.getAttribute("userData"); %>
+    <% doctorData = (DoctorData) session.getAttribute("doctorData");
        session.setAttribute("docData", (DoctorData) doctorData); %>
     <% patientViewingProfile = (String) request.getAttribute("patientViewingDoctor");
-        session.setAttribute("patientViewingDoctor", patientViewingProfile); %>
+       session.setAttribute("patientViewingDoctor", patientViewingProfile); %>
     <body>
         <div class="container">  
             <%
-                if(session.getAttribute("userData") == null){
+                if(user == null){
                     response.sendRedirect("index.jsp");
-                    return; 
+                    return;
                 }
         
                 if (doctorData != null) {
             %>
 
             <%
-                if (patientViewingProfile.equals("1")) {
+                if (user.getUserType() == "patient") {
                     doctorData.setEmailAddress(null);
                 }
             %>
 
-            <h1>Dr. <%= doctorData.getFirstName()%> <%= doctorData.getMiddleInitial()%>. <%= doctorData.getLastName()%></h1>
+            <h1>Dr. <%= doctorData.getFirstName()%> <%= user.getMiddleInitial()%><% if(user.getMiddleInitial() != null && doctorData.getMiddleInitial() != "") { %> . <% }%><%= doctorData.getLastName()%></h1>
             <h2 class="page-header">General Information: </h2>
 
             <dl class="dl-horizontal">
@@ -121,7 +124,7 @@
             <h2 class="page-header">Reviews
 
                 <%
-                    if (patientViewingProfile.equals("1")) {
+                    if (user.getUserType() == "patient") {
                 %>
                 <button class="btn btn-default pull-right" type="submit" data-toggle="modal" data-target="#writeReviewModal">Write Review</button>
                 <%
