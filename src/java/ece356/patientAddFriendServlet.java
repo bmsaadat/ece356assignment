@@ -7,6 +7,7 @@ package ece356;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,19 +32,26 @@ public class patientAddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet patientAddFriendServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet patientAddFriendServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        // Hardcoded reviewer for now
+        String doctorUsername = request.getParameter("doctorUsername");
+        String patientUsername = "bmsaadat_patient";        
+        String rating = request.getParameter("rating");
+        String comment = request.getParameter("comment");
+        ReviewData review = new ReviewData();
+        review.comment = comment;
+        review.doctorUsername = doctorUsername;
+        review.patientUsername = patientUsername;
+        review.rating = Integer.parseInt(rating);
+        review.date = new Date();
+        
+        String url;
+        try{
+            //UserDBAO.addFriend(review);
+            url = "/patientAddFriendView.jsp";
+        } catch (Exception e) {
+            url = "/error.jsp";
         }
+        getServletContext().getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
