@@ -12,7 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.*;
+import javax.servlet.http.*;
 /**
  *
  * @author behrozsaadat
@@ -46,6 +47,7 @@ public class DoctorProfileServlet extends HttpServlet {
             throws java.sql.SQLException, ClassNotFoundException {
         String hideInformationString = request.getParameter("hideInformation");    
         if (hideInformationString == null) hideInformationString = "1";
+        //UserData user = session.getAttribute("userData"); 
         DoctorData ret = UserDBAO.queryDoctor("bmsaadat");
         request.setAttribute("doctorData", ret);
         request.setAttribute("patientViewingDoctor", hideInformationString);

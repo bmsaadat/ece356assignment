@@ -16,6 +16,13 @@
         <title>Patient Search Results</title>
     </head>
     <body>
+        <%
+            if(session.getAttribute("userData") == null){
+                response.sendRedirect("index.jsp");
+                return; 
+            }
+        %>
+        
         <div class="container">  
             <h2 class="page-header">Search Results: </h2>
             

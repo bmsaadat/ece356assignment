@@ -1,13 +1,16 @@
-package ece356;
+package ece356; 
 
 import java.sql.*;
 import java.util.*;
+import java.security.SecureRandom; 
+import org.apache.commons.codec.binary.BaseNCodec; 
+ 
 
 public class UserDBAO {
 
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306";
     //public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
-    public static final String nid = "bmsaadat";
+    public static final String nid = "sragavan";
     public static final String user = "user_" + nid;
     public static final String pwd = "user_" + nid;
 
@@ -26,6 +29,248 @@ public class UserDBAO {
             }
         }
         return con;
+    }
+    
+   private static String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[20];
+        random.nextBytes(bytes);
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
+    }
+
+    public static void syncSampleData() 
+       throws ClassNotFoundException, SQLException 
+    {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        DoctorData ret;
+        try 
+        {
+            con = getConnection();          
+            pstmt = con.prepareStatement("INSERT INTO userType (userType) VALUES ('doctor');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO userType (userType) VALUES ('patient');");
+            pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('surgeon');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('family');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('cardiologist');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('eye');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('brain');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO specializationType (specTypeName) VALUES ('ENT');");
+            pstmt.executeUpdate();
+            
+            String salt = generateSalt(); 
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('bmsaadat', '"+salt+"', SHA2(CONCAT('"+salt+"', 'password123'), 256), 'Behroz', 'M', 'Saadat', 'behrozsaadat@gmail.com', 1);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctor VALUES ('bmsaadat', 2012, 'male');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('bmsaadat', 5);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('bmsaadat', 4);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('bmsaadat', 3);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (1, 'Glenora Dr', 1329, NULL, 'London', 'Ontario', 'N5X1T6', 'bmsaadat');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (4, 'Glengarry', 123, NULL, 'Sarnia', 'Ontario', 'B6G3D2', 'bmsaadat');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (5, 'Adelaide', 1, NULL, 'London', 'Ontario', 'H6G3D2', 'bmsaadat');");
+            pstmt.executeUpdate();
+            
+            salt = generateSalt(); 
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('sabash', '"+salt+"', SHA2(CONCAT('"+salt+"', 'weakPassword'), 256), 'Sabashan', '', 'Ragavan', 'sabes@gmail.com', 1);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctor VALUES ('sabash', 1993, 'male');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('sabash', 1);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('sabash', 4);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (2, 'Lester St.', 231, NULL, 'Waterloo', 'Ontario', 'N6Y1T2', 'sabash');");
+            pstmt.executeUpdate();
+            
+            salt = generateSalt(); 
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('abishek', '"+salt+"', SHA2(CONCAT('"+salt+"', 'weakPassword123'), 256), 'Abishek', '', 'Sisodia', 'abishek@gmail.com', 1);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctor VALUES ('abishek', 2000, 'male');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('abishek', 6);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (3, 'Bay St.', 1329, NULL, 'Toronto', 'Ontario', 'Y6T6K4', 'abishek');");
+            pstmt.executeUpdate();
+            
+            salt = generateSalt(); 
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('bmsaadat_patient', '"+salt+"', SHA2(CONCAT('"+salt+"', 'weakPassword123'), 256), 'Behroz', 'M', 'Saadat', 'bms_300@gmail.com', 2);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO patient VALUES ('bmsaadat_patient', 'London', 'Ontario');");
+            pstmt.executeUpdate(); 
+
+            salt = generateSalt(); 
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('sabash_patient', '"+salt+"', SHA2(CONCAT('"+salt+"', 'password123'), 256), 'Sabashan', '', 'Ragavan', 'sabes_patient@gmail.com', 2);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO patient VALUES ('sabash_patient', 'Waterloo', 'Ontario');");
+            pstmt.executeUpdate();
+            
+            salt = generateSalt();             
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('abishek_patient', '"+salt+"', SHA2(CONCAT('"+salt+"', 'password123'), 256), 'Abishek', '', 'Sisodia', 'abishek_patient@gmail.com', 2);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO patient VALUES ('abishek_patient', 'Edmonton', 'Alberta');");
+            pstmt.executeUpdate(); 
+            
+            salt = generateSalt();
+            pstmt = con.prepareStatement("INSERT INTO user VALUES ('john', '"+salt+"', SHA2(CONCAT('"+salt+"', 'password123'), 256), 'John', '', 'Doe', 'john@gmail.com', 2);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO patient VALUES ('john', 'Toronto', 'Ontario');");
+            pstmt.executeUpdate();
+            
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('bmsaadat_patient', 'sabash_patient', 0);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('bmsaadat_patient', 'abishek_patient', 0);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('sabash_patient', 'abishek_patient', 1);");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('bmsaadat_patient', 'john', 1);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('john', 'sabash_patient', 1);");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO friend VALUES ('abishek_patient', 'john', 1);");
+            pstmt.executeUpdate();             
+
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (1, 'bmsaadat', 'bmsaadat_patient', '2014-11-01 12:45:34', 3, 'Great Doctor!!!! He did everything for me properly... bleh bleh');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (2, 'bmsaadat', 'bmsaadat_patient', '2014-11-02 12:45:34', 2, 'My second visit was not too great...');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (3, 'bmsaadat', 'bmsaadat_patient', '2014-11-03 12:45:34', 1, 'My third visit was horrendous!');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (4, 'bmsaadat', 'abishek_patient', '2014-11-04 12:45:34', 5, 'Good job doctor');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (5, 'bmsaadat', 'sabash_patient', '2014-11-05 12:45:34', 4, 'Good job doctor behroz!!');");
+            pstmt.executeUpdate();     
+
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (6, 'sabash', 'bmsaadat_patient', '2014-11-06 12:45:34', 5, 'Great Doctor!!!! He did everything for me properly... bleh bleh');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (7, 'sabash', 'sabash_patient', '2014-11-07 12:45:34', 4, 'YES good JOB');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (8, 'sabash', 'abishek_patient', '2014-11-08 12:45:34', 5, 'My stomach hurts');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (9, 'sabash', 'sabash_patient', '2014-11-09 12:45:34', 3, 'YEAH BUDDY');");
+            pstmt.executeUpdate();  
+
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (10, 'abishek', 'sabash_patient', '2014-11-01 12:45:34', 1, 'BAD DOCTOR');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (11, 'abishek', 'bmsaadat_patient', '2014-11-02 12:45:34', 1, 'BAD DOCTOR !!!');");
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (12, 'abishek', 'abishek_patient', '2014-11-03 12:45:34', 1, 'BAD DOCTOR BAD BAD!!');");
+            pstmt.executeUpdate(); 
+            pstmt = con.prepareStatement("INSERT INTO review VALUES (13, 'abishek', 'abishek_patient', '2014-11-04 12:45:34', 1, 'BAD DOCTOR A!!!');");
+            pstmt.executeUpdate();         
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+               pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+       }
+    }
+    
+    public static String getSalt(String username)
+             throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        UserData ret;
+        try 
+        {
+            con = getConnection();
+            String query = "select COUNT(*)as numRecords, password_salt from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            resultSet.next();
+            
+            if(resultSet.getInt("numRecords") > 0)
+            {
+                return resultSet.getString("password_salt"); 
+            }
+            else
+                return null; 
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("EXCEPTION:%% " + e);
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+                pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+        }
+        return null;
+    }
+    
+    public static UserData queryUser(String username, String password, String salt)
+            throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        UserData ret;
+        try 
+        {
+            con = getConnection();
+            String query = "select COUNT(*) as numRecords, username, first_name, middle_initial, last_name, email_address, userType from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ? and user.password_hash = SHA2(CONCAT('"+salt+"', '"+password+"'), 256)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            resultSet.next();
+            ret = new UserData();
+            
+            if(resultSet.getInt("numRecords") > 0)
+            {
+                ret.userName = resultSet.getString("username");
+                ret.firstName = resultSet.getString("first_name");
+                ret.lastName = resultSet.getString("last_name");
+                ret.middleInitial = resultSet.getString("middle_initial");
+                ret.emailAddress = resultSet.getString("email_address");
+                ret.userType = resultSet.getString("userType");
+            }
+            else
+            {
+                ret = null; 
+            }
+            return ret;
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("EXCEPTION:%% " + e);
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+                pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+        }
+        return null;
     }
 
     public static void writeReview(ReviewData review)
@@ -52,7 +297,7 @@ public class UserDBAO {
     }
 
     public static DoctorData queryDoctor(String userName)
-            throws ClassNotFoundException, SQLException {
+        throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         DoctorData ret;
