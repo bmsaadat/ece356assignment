@@ -4,13 +4,13 @@ import java.sql.*;
 import java.util.*;
 import java.security.SecureRandom; 
 import org.apache.commons.codec.binary.BaseNCodec; 
- 
+
 
 public class UserDBAO {
 
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306";
     //public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
-    public static final String nid = "sragavan";
+    public static final String nid = "bmsaadat";
     public static final String user = "user_" + nid;
     public static final String pwd = "user_" + nid;
 
@@ -295,47 +295,70 @@ public class UserDBAO {
         }
     }
     
-    public static void addFriend(PatientData friendA, PatientData friendB)
+    public static FriendShipStatus addFriend(String friendA, String friendB)
             throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
-            con = getConnection();
+            con = getConnection();            
+            // First check if sender has already sent a request to receiver in the past
+                // If he has, then check if it's accepted
+                    // If it is accepted, then return ALREADY_FRIENDS
+                    // If it is not accepted, then return WAITING_FOR_ACCEPT
+                // If he hasn't then check if the receiver has sent a request to sender in the past
+                    // If he hasn't, then make an INSERT and return REQUEST_SENT
+                    // If he has, then check if it's accepted
+                        // If it's not accepted, then UPDATE and make isAccepted = true and return FRIENDSHIP_ESTABLISHED                            
+                        // If it is accepted, then return ALREADY_FRIENDS                        
             
             // Find if this request is already there
-            String query = "SELECT * FROM friend where (sent_username = ? AND received_username = ?) OR (sent_username = ? AND received_username = ?)";
+            String query = "SELECT * FROM friend where sent_username = ? AND recieved_username = ?";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, friendA.getUserName());
-            pstmt.setString(2, friendB.getUserName());
-            pstmt.setString(3, friendB.getUserName());
-            pstmt.setString(4, friendA.getUserName());
+            pstmt.setString(1, friendA);
+            pstmt.setString(2, friendB);
 
             ResultSet resultSet;
             resultSet = pstmt.executeQuery();
             resultSet.next();
             
-            if (resultSet == null) {
-                pstmt = con.prepareStatement("INSERT INTO friend (sent_username, received_username) VALUES (?, ?);");
-                pstmt.setString(1, friendA.getUserName());
-                pstmt.setString(2, friendB.getUserName());
-                pstmt.executeUpdate();
-            } else {
+            if(resultSet.first()) {
+                System.out.println("RESULT SET: " + resultSet.getString("sent_username") + " " + resultSet.getString("recieved_username"));
                 boolean isAccepted = resultSet.getBoolean("isAccepted");
-                if (!isAccepted) {
-                    String update = "UPDATE friend SET isAccepted = ? where (sent_username = ? AND received_username = ?) OR (sent_username = ? AND received_username = ?);";
-                    pstmt = con.prepareStatement(update);
-                    pstmt.setBoolean(1, true);
-                    pstmt.setString(2, friendA.getUserName());
-                    pstmt.setString(3, friendB.getUserName());
-                    pstmt.setString(4, friendB.getUserName());
-                    pstmt.setString(5, friendA.getUserName());
+                if (isAccepted) {
+                    return FriendShipStatus.ALREADY_FRIENDS;
+                } else {
+                    return FriendShipStatus.WAITING_FOR_ACCEPT;
+                }                
+            } else {
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, friendB);
+                pstmt.setString(2, friendA);
+                resultSet = pstmt.executeQuery();
+                resultSet.next();
+                if(resultSet.first()) {
+                System.out.println("RESULT SET: " + resultSet.getString("sent_username") + " " + resultSet.getString("recieved_username"));
+                    boolean isAccepted = resultSet.getBoolean("isAccepted");
+                    if (isAccepted) {
+                        return FriendShipStatus.ALREADY_FRIENDS;
+                    } else {
+                        String update = "UPDATE friend SET isAccepted = ? where sent_username = ? AND recieved_username = ?;";
+                        pstmt = con.prepareStatement(update);
+                        pstmt.setBoolean(1, true);
+                        pstmt.setString(2, friendB);
+                        pstmt.setString(3, friendA);
+                        pstmt.executeUpdate();
+                        return FriendShipStatus.FRIENDSHIP_ESTABLISHED;
+                    }
+                } else {
+                    pstmt = con.prepareStatement("INSERT INTO friend (sent_username, recieved_username) VALUES (?, ?);");
+                    pstmt.setString(1, friendA);
+                    pstmt.setString(2, friendB);
                     pstmt.executeUpdate();
-                }
-            }
-            
-            
-            
-        } finally {
+                    return FriendShipStatus.REQUEST_SENT;
+                }               
+            }           
+        } 
+        finally {
             if (pstmt != null) {
                 pstmt.close();
             }

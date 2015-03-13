@@ -14,12 +14,27 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Patient Search Results</title>
+        
+         <script src="http://code.jquery.com/jquery-latest.js">   
+        </script>
+        <script>
+            $(document).ready(function() {                        
+                $('.addButton').click(function(event) {  
+                    
+                    var username=event.target.id;
+                 $.get('patientAddFriendServlet',{user:username},function(responseText) { 
+                        alert(responseText);
+                    });
+                });
+            });
+        </script>
+        
     </head>
     <body>
         <%
             if(session.getAttribute("userData") == null){
-                response.sendRedirect("index.jsp");
-                return; 
+                //response.sendRedirect("index.jsp");
+                //return; 
             }
         %>
         
@@ -51,8 +66,7 @@
                     
                     <tr>
                         <td>
-                            <a href="index.jsp">
-                        <button class="btn btn-default btn-sm" type="submit" data-toggle="modal">Add Friend</button></a></a>
+                        <button id="<%= patient.getUserName() %>" class="btn btn-default btn-sm addButton" type="submit" data-toggle="modal">Add Friend</button>
                         </td>
                         <td>
                             <%= patient.getUserName()%>

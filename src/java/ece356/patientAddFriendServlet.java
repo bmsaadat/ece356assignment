@@ -32,26 +32,35 @@ public class patientAddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Hardcoded reviewer for now
-        String doctorUsername = request.getParameter("doctorUsername");
-        String patientUsername = "bmsaadat_patient";        
-        String rating = request.getParameter("rating");
-        String comment = request.getParameter("comment");
-        ReviewData review = new ReviewData();
-        review.comment = comment;
-        review.doctorUsername = doctorUsername;
-        review.patientUsername = patientUsername;
-        review.rating = Integer.parseInt(rating);
-        review.date = new Date();
-        
-        String url;
+        // Hardcoded friends
+        String friendA = "bmsaadat_patient";
+        String friendB = request.getParameter("user");        
+        String message;
         try{
-            //UserDBAO.addFriend(review);
-            url = "/patientAddFriendView.jsp";
+            FriendShipStatus friendStatus = UserDBAO.addFriend(friendA, friendB);
+            switch (friendStatus) {
+                case ALREADY_FRIENDS: 
+                    message = "You are already friends with " + friendB; 
+                    break;
+                case WAITING_FOR_ACCEPT: 
+                    message = "You've already sent a request to " + friendB;
+                    break;
+                case REQUEST_SENT: 
+                    message = "Request sent to " + friendB;
+                    break;
+                case FRIENDSHIP_ESTABLISHED: 
+                    message = "You are now friends with " + friendB;
+                    break;
+                default: 
+                    message = "Something went wrong!";
+                    break;
+            }
         } catch (Exception e) {
-            url = "/error.jsp";
+            message = "Something went wrong! Try again." + e;
         }
-        getServletContext().getRequestDispatcher(url).forward(request, response);
+        response.setContentType("text/plain");  
+        response.setCharacterEncoding("UTF-8"); 
+        response.getWriter().write(message); 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
