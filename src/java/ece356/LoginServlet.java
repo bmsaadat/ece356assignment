@@ -55,6 +55,7 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("userData", ret);
                     HttpSession session = request.getSession();
                     session.setAttribute("userData", ret);
+                    UserData u = (UserData)session.getAttribute("userData");  
                     
                     if(ret.userType.equals("doctor"))
                     {
@@ -62,7 +63,7 @@ public class LoginServlet extends HttpServlet {
                     }
                     else if(ret.userType.equals("patient"))
                     {
-                        url = "/patientSearchView.jsp"; 
+                        url = "/patientLoggedInView.jsp"; 
                     }
                 }
                 else

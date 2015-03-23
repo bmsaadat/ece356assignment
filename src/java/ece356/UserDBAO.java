@@ -8,7 +8,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.codec.binary.BaseNCodec; 
-
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 public class UserDBAO {
 
@@ -476,7 +480,174 @@ public class UserDBAO {
         }
         return null;
     }
+    
+   public static ArrayList<DoctorData> queryDoctor(HashMap<String, String> doctorParam, String user) 
+        throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ArrayList<DoctorData> ret;
+        try { 
+            con = getConnection();
+            String query; 
+            if(doctorParam.containsKey("reviewByFriends") && doctorParam.get("reviewByFriends").equals("yes"))
+            {
+                query = "select * from " +
+                            "(select recieved_username as username from friend where sent_username = '"+user+"' AND isAccepted = true " +
+                            "union " +
+                            "select sent_username as username from friend where recieved_username = '"+user+"' AND isAccepted = true ) " +
+                            "as friends inner join doctorSearchView on doctorSearchView.patient_username = friends.username "
+                            ;
+                   // pstmt = con.prepareStatement(query);
+            }
+            else
+            {
+                query = "SELECT * FROM doctorSearchView "
+                    ;
+                    //pstmt = con.prepareStatement(query);
 
+            }
+            // Query for general doctor information
+            ArrayList<String> keys = new ArrayList<String>(doctorParam.keySet()); 
+            ArrayList<String> values = new ArrayList<String>(doctorParam.values()); 
+
+            if (!keys.isEmpty()) 
+            {
+                query = query + " where";
+                for (String key : keys) 
+                {
+                    if(!key.equals("averageRating") && !key.equals("yearsLicensed"))
+                    {
+                        query = query + " " + key + " LIKE ?";
+                        query += " AND";
+                    }
+                    else
+                    {
+                        query = query + " " + key + " >= ?";
+                        query += " AND";                       
+                    }
+                }
+                query = query.substring(0, query.length()-4);
+                System.out.println(query);
+            }
+            
+            query += " group by first_name, last_name, gender, averageRating, numberOfReviews";
+
+            pstmt = con.prepareStatement(query);
+            
+            if (!values.isEmpty()) {
+                int count = 1;
+                for(String value : values) 
+                {
+                    if(value.getClass().getName().equals("String"))
+                    {
+                        pstmt.setString(count, "%" + value + "%");
+                    }
+                    else
+                    {
+                        pstmt.setString(count, value);
+                    }
+                    count++;
+                }
+            }
+
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();           
+
+            ret = new ArrayList();
+
+            while (resultSet.next()) {
+                 DoctorData doctor = new DoctorData();
+                 doctor.firstName = resultSet.getString("first_name");
+                 doctor.lastName = resultSet.getString("last_name");
+                 doctor.gender = resultSet.getString("gender");
+                 doctor.averageRating = resultSet.getInt("averageRating");
+                 doctor.numberOfReviews = resultSet.getInt("numberOfReviews");
+                 ret.add(doctor);
+             }
+             return ret;
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("EXCEPTION:%% " + e);
+        } 
+        finally 
+        {
+            if (pstmt != null) 
+            {
+                pstmt.close();
+            }
+            if (con != null) 
+            {
+                con.close();
+            }
+        }
+        return null;
+    }
+            /*resultSet.next();
+            ret = new DoctorData();
+            ret.userName = resultSet.getString("username");
+            ret.firstName = resultSet.getString("first_name");
+            ret.lastName = resultSet.getString("last_name");
+            ret.middleInitial = resultSet.getString("middle_initial");
+            ret.gender = resultSet.getString("gender");
+            ret.emailAddress = resultSet.getString("email_address");
+            ret.yearsLicensed = resultSet.getInt("yearsLicensed");
+            ret.averageRating = resultSet.getInt("averageRating");
+            ret.numberOfReviews = resultSet.getInt("numberOfReviews");
+
+            // Query for work addresses of doctor
+            query = "SELECT * FROM doctorWorkAddressView where doc_address_username = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, userName);
+            resultSet = pstmt.executeQuery();
+
+            ArrayList<WorkAddressData> workAddressList = new ArrayList<WorkAddressData>();
+            ret.workAddressList = workAddressList;
+            while (resultSet.next()) {
+                WorkAddressData workAddress = new WorkAddressData();
+                workAddress.city = resultSet.getString("city");
+                workAddress.state = resultSet.getString("state");
+                workAddress.postalCode = resultSet.getString("postal_code");
+                workAddress.streetName = resultSet.getString("street_name");
+                workAddress.streetNumber = resultSet.getInt("street_number");
+                workAddress.unitNumber = resultSet.getString("street_unit_number");
+                workAddressList.add(workAddress);
+            }
+
+            // Query for specializations of doctor
+            query = "SELECT * FROM doctorSpecializationView where doc_spec_username = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, userName);
+            resultSet = pstmt.executeQuery();
+
+            ArrayList<String> specializationList = new ArrayList<String>();
+            ret.specializationList = specializationList;
+            while (resultSet.next()) {
+                String specialization = resultSet.getString("specTypeName");
+                specializationList.add(specialization);
+            }
+
+            // Query for reviews of doctor
+            query = "SELECT * FROM review where doc_username = ? order by date desc";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, userName);
+            resultSet = pstmt.executeQuery();
+
+            ArrayList<ReviewData> reviewList = new ArrayList<ReviewData>();
+            ret.reviewList = reviewList;
+            while (resultSet.next()) {
+                ReviewData review = new ReviewData();
+                review.comment = resultSet.getString("comment");
+                review.reviewId = resultSet.getString("reviewId");
+                review.doctorUsername = resultSet.getString("doc_username");
+                review.patientUsername = resultSet.getString("patient_username");
+                review.date = resultSet.getDate("date");
+                review.rating = resultSet.getInt("rating");
+                reviewList.add(review);
+            }
+
+            return ret;*/
+   
     public static ArrayList<PatientData> queryPatients(String username, String state, String city)
             throws ClassNotFoundException, SQLException {
         Connection con = null;
