@@ -3,6 +3,10 @@ package ece356;
 import java.sql.*;
 import java.util.*;
 import java.security.SecureRandom; 
+import javax.sql.DataSource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.apache.commons.codec.binary.BaseNCodec; 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,14 +19,27 @@ public class UserDBAO {
 
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306";
     //public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
-    public static final String nid = "sragavan";
+    public static final String nid = "bmsaadat";
     public static final String user = "user_" + nid;
     public static final String pwd = "user_" + nid;
 
     public static Connection getConnection()
-            throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection(url, user, pwd);
+            throws ClassNotFoundException, SQLException, NamingException {
+        InitialContext cxt = new InitialContext(); 
+        if (cxt == null) {
+            throw new RuntimeException("Unable to create naming context!");
+        }
+        Context dbContext = (Context) cxt.lookup("java:comp/env"); 
+        DataSource ds = (DataSource) dbContext.lookup("jdbc/myDatasource");
+        if (ds == null) {
+        throw new RuntimeException("Data source not found!");
+        }
+        Connection con = ds.getConnection();
+        
+        
+        
+        /*Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(url, user, pwd);*/
         Statement stmt = null;
         try {
             con.createStatement();
@@ -42,9 +59,9 @@ public class UserDBAO {
         random.nextBytes(bytes);
         return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
     }
-
+   
     public static void syncSampleData() 
-       throws ClassNotFoundException, SQLException 
+       throws ClassNotFoundException, SQLException, NamingException 
     {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -236,17 +253,18 @@ public class UserDBAO {
         UserData ret;
         try 
         {
+           
             con = getConnection();
             String query = "select COUNT(*) as numRecords, username, first_name, middle_initial, last_name, email_address, userType from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ? and user.password_hash = SHA2(CONCAT('"+salt+"', '"+password+"'), 256)";
+            
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, username);
             ResultSet resultSet;
             resultSet = pstmt.executeQuery();
             resultSet.next();
             ret = new UserData();
-            
-            if(resultSet.getInt("numRecords") > 0)
-            {
+                        
+            if(resultSet.first()) {
                 ret.userName = resultSet.getString("username");
                 ret.firstName = resultSet.getString("first_name");
                 ret.lastName = resultSet.getString("last_name");
@@ -279,7 +297,7 @@ public class UserDBAO {
     }
 
     public static void writeReview(ReviewData review)
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, NamingException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -301,7 +319,7 @@ public class UserDBAO {
     }
     
     public static FriendShipStatus addFriend(String friendA, String friendB)
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, NamingException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -372,7 +390,7 @@ public class UserDBAO {
             }
         }
     }
-
+    
     public static DoctorData queryDoctor(String userName)
         throws ClassNotFoundException, SQLException {
         Connection con = null;
@@ -750,5 +768,11 @@ public class UserDBAO {
             }
         }
         return null;
+    }
+    
+    public static boolean isLoggedIn(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserData loggedInUser = (UserData) session.getAttribute("userData");
+        return loggedInUser != null;        
     }
 }

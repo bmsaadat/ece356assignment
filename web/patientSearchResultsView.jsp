@@ -39,6 +39,7 @@
         %>
         
         <div class="container">  
+        <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search Results: </h2>
             
             <table class="table">
@@ -78,7 +79,9 @@
                             <%= patient.getNumberOfReviews()%>
                         </td>
                         <td>
+                            <% if(patient.getLastReviewDate() != null) { %>
                             <%= patient.getLastReviewDate()%>
+                            <% } %>
                         </td>
                     </tr>
                     

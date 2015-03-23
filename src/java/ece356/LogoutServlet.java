@@ -12,14 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author behrozsaadat
  */
-@WebServlet(name = "DoctorProfileServlet", urlPatterns = {"/DoctorProfileServlet"})
-public class DoctorProfileServlet extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,11 +31,12 @@ public class DoctorProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
+            throws ServletException, IOException {
         String url;
         try {
-            query3helper(request, response);
-            url = "/doctorProfileView.jsp";
+            HttpSession session = request.getSession();
+            session.invalidate();
+            url = "/index.jsp";
         }
         catch (Exception e) {
             url = "/error.jsp";
@@ -43,20 +44,6 @@ public class DoctorProfileServlet extends HttpServlet {
         getServletContext().getRequestDispatcher(url).forward(request, response);
     }
 
-    protected void query3helper(HttpServletRequest request, HttpServletResponse response)
-            throws java.sql.SQLException, ClassNotFoundException {
-        if (!UserDBAO.isLoggedIn(request)) return;
-        
-        //String hideInformationString = request.getParameter("hideInformation");    
-        //if (hideInformationString == null) hideInformationString = "1";
-        HttpSession session = request.getSession();
-        UserData user = (UserData) session.getAttribute("userData"); 
-        DoctorData ret = UserDBAO.queryDoctor(user.userName);
-        session.setAttribute("doctorData", ret);
-        //request.setAttribute("patientViewingDoctor", hideInformationString);
-        
-    }
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

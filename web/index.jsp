@@ -15,6 +15,7 @@
     </head>
     <body>
     <div class="container">
+
         <h1 ><ul>Hospital Management System</ul></h1>
 
       <form class="form-signin" action="LoginServlet" method="POST">

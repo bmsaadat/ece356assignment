@@ -5,17 +5,34 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="ece356.UserData"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
         <title>JSP Page</title>
     </head>
     <body>
-        <ul>
-            <li><a href="doctorSearchView.jsp">Search for Doctor</a></li>
-            <li><a href="patientSearchView.jsp">Search For Patients</a></li>
-            <li><a href="FriendshipViewStatus">View Friend Requests</a></li>
-        </ul>    
+        <%
+            if(session.getAttribute("userData") == null){
+                response.sendRedirect("index.jsp");
+                return; 
+            }
+        %>
+        <%! UserData user;%>
+        <% user = (UserData) session.getAttribute("userData"); %>
+        <div class="container">
+            <%@ include file="logout.jsp" %>
+            <h2 class="page-header"><%= user.getFirstName()%> <%= user.getLastName()%></h2>
+            <div class="well center-block">
+                <a href="doctorSearchView.jsp"><button type="button" class="btn btn-primary btn-lg btn-block">Search for Doctor</button></a>
+                <br>
+                <a href="patientSearchView.jsp"><button type="button" class="btn btn-primary btn-lg btn-block">Search For Patients</button></a>
+                <br>
+                <a href="FriendshipViewStatus"><button type="button" class="btn btn-primary btn-lg btn-block">View Friend Requests</button></a>
+            </div>
+        </div>
     </body>
 </html>

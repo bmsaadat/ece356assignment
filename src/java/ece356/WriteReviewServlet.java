@@ -31,6 +31,7 @@ public class WriteReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!UserDBAO.isLoggedIn(request)) return;
         // Hardcoded reviewer for now
         String doctorUsername = request.getParameter("doctorUsername");
         String patientUsername = "bmsaadat_patient";        

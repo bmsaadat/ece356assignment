@@ -35,6 +35,7 @@
             %>
         
         <div class="container">  
+            <%@ include file="logout.jsp" %>
             <form action="DoctorProfileServlet?hideInformation=<%= hideInformation%>" method="post">
                   <button class="btn btn-default pull-left" type="submit" data-toggle="modal">Back to Profile</button>
             </form>

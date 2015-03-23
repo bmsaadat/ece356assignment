@@ -43,6 +43,7 @@
 
 <body>
     <div class="container">  
+        <%@ include file="logout.jsp" %>
         <h2 class="page-header">Pending Friend Requests</h2>
         <table class="table">
             <thead>

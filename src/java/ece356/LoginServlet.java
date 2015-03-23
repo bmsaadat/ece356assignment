@@ -46,6 +46,7 @@ public class LoginServlet extends HttpServlet {
             String username = request.getParameter("user_name"); 
             String password = request.getParameter("password"); 
             String salt = UserDBAO.getSalt(username); 
+            System.out.println("!!! SALT::: " + salt);
             String url = "/index.jsp"; 
             if(salt != null)
             {

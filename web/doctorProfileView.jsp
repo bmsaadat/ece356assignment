@@ -29,6 +29,8 @@
        session.setAttribute("patientViewingDoctor", patientViewingProfile); %>
     <body>
         <div class="container">  
+            <%@ include file="logout.jsp" %>
+
             <%
                 if(user == null){
                     response.sendRedirect("index.jsp");

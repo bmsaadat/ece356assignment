@@ -32,6 +32,8 @@ public class PatientSearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
+        if (!UserDBAO.isLoggedIn(request)) return;
+        
         String url;
         try {
             query3helper(request, response);
