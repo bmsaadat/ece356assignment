@@ -8,25 +8,31 @@
 <!DOCTYPE html>
 <html>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
     </head>
     <body>
-        <h1>Lab 1</h1>
-        <ul>
-            <li><a href="SyncDataServlet">Sync Data</a></li>
-            <li><a href="DoctorProfileServlet?hideInformation=0">View Own Doctor Profile</a></li>
-            <li><a href="DoctorProfileServlet?hideInformation=1">Patient Views Doctor Profile</a></li>
-            <li><a href="patientSearchView.jsp">Search For Patients</a></li>
-            <li><a href="FriendshipViewStatus">View Friend Requests</a></li>
-        </ul>
+    <div class="container">
+        <h1 ><ul>Hospital Management System</ul></h1>
 
-        <h1>Please login:</h1>
-        <form action="LoginServlet" method="POST">
-            Username: <input type="text" name="user_name"><br />
-            Password: <input type="password" name="password" />
-            <input type="submit" value="Submit" /><br /> 
-        </form>
+      <form class="form-signin" action="LoginServlet" method="POST">
+        <h3 >Sign-in:</h3>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input id="inputUsername" class="form-control" placeholder="Username" name="user_name" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="password">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
     </body>
+    
+
 </html>
