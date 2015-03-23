@@ -34,6 +34,7 @@ public class patientAddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!UserDBAO.isLoggedIn(request)) return;
         // Hardcoded friends
         HttpSession session = request.getSession();
         String friendA = ((UserData)session.getAttribute("userData")).getUserName();

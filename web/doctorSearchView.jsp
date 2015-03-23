@@ -22,6 +22,7 @@
         %>
         
         <div class="container">  
+            <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search For Doctors: </h2>
             <form id="searchPatients" action="DoctorSearchServlet" method="POST">
                 <div class="form-group">

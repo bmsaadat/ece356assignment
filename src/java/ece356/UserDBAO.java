@@ -252,17 +252,18 @@ public class UserDBAO {
         UserData ret;
         try 
         {
+           
             con = getConnection();
             String query = "select COUNT(*) as numRecords, username, first_name, middle_initial, last_name, email_address, userType from user INNER JOIN userType ON user.userTypeID = userType.userTypeID where user.username = ? and user.password_hash = SHA2(CONCAT('"+salt+"', '"+password+"'), 256)";
+            
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, username);
             ResultSet resultSet;
             resultSet = pstmt.executeQuery();
             resultSet.next();
             ret = new UserData();
-            
-            if(resultSet.getInt("numRecords") > 0)
-            {
+                        
+            if(resultSet.first()) {
                 ret.userName = resultSet.getString("username");
                 ret.firstName = resultSet.getString("first_name");
                 ret.lastName = resultSet.getString("last_name");
@@ -388,7 +389,7 @@ public class UserDBAO {
             }
         }
     }
-
+    
     public static DoctorData queryDoctor(String userName)
         throws ClassNotFoundException, SQLException {
         Connection con = null;
@@ -760,5 +761,11 @@ public class UserDBAO {
             }
         }
         return null;
+    }
+    
+    public static boolean isLoggedIn(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserData loggedInUser = (UserData) session.getAttribute("userData");
+        return loggedInUser != null;        
     }
 }

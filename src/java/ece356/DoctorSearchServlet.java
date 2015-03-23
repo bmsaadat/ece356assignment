@@ -32,6 +32,8 @@ public class DoctorSearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!UserDBAO.isLoggedIn(request)) return;
+
         response.setContentType("text/html;charset=UTF-8");
         String url; 
         try {

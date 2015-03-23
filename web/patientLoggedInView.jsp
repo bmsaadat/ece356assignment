@@ -24,6 +24,7 @@
         <%! UserData user;%>
         <% user = (UserData) session.getAttribute("userData"); %>
         <div class="container">
+            <%@ include file="logout.jsp" %>
             <h2 class="page-header"><%= user.getFirstName()%> <%= user.getLastName()%></h2>
             <div class="well center-block">
                 <a href="doctorSearchView.jsp"><button type="button" class="btn btn-primary btn-lg btn-block">Search for Doctor</button></a>

@@ -45,6 +45,8 @@ public class DoctorProfileServlet extends HttpServlet {
 
     protected void query3helper(HttpServletRequest request, HttpServletResponse response)
             throws java.sql.SQLException, ClassNotFoundException {
+        if (!UserDBAO.isLoggedIn(request)) return;
+        
         //String hideInformationString = request.getParameter("hideInformation");    
         //if (hideInformationString == null) hideInformationString = "1";
         HttpSession session = request.getSession();
