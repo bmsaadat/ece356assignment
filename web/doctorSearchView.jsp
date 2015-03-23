@@ -30,13 +30,20 @@
                     <input type="text" class="form-control" name="firstname" placeholder="First Name">
                 </div>
                 <div class="form-group">
+                    <label for="middleinitial">Middle Initial</label>
+                    <input type="text" class="form-control" name="middleinitial" placeholder="Middle Initial">
+                </div>                
+                <div class="form-group">
                     <label for="lastname">Last Name</label>
                     <input type="text" class="form-control" name="lastname" placeholder="Last Name">
                 </div>
                 <div class="form-group">
-                    <label for="gender">Gender</label><br>
-                    <input type="radio" name="gender" value="male">Male<br>
-                    <input type="radio" name="gender" value="female">Female<br>     
+                    <label for="gender">Gender</label>  
+                    <select name = "gender">
+                        <option value=""></option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                   </select> 
                 </div>
                 <div class="form-group">
                     <label for="workAddress">Work Address</label>
@@ -49,7 +56,7 @@
                       <div class="col-md-2">Postal Code</div>
                     </div>     
                     <div class="row">
-                      <div class="col-md-2"><input type="text" class="form-control" name="streeNumber" placeholder="Street Number"></div>
+                      <div class="col-md-2"><input type="text" class="form-control" name="streetNumber" placeholder="Street Number"></div>
                       <div class="col-md-2"><input type="text" class="form-control" name="streetName" placeholder="Street Name"></div>
                       <div class="col-md-2"><input type="text" class="form-control" name="unitNumber" placeholder="Unit Number"></div>
                       <div class="col-md-2"><input type="text" class="form-control" name="city" placeholder="City"></div>
@@ -62,13 +69,13 @@
                     <input type="text" class="form-control" name="specialization" placeholder="Specialization">
                 </div>               
                 <div class="form-group">
-                    <label for="yearsLicensed">Years Licensed</label>
+                    <label for="yearsLicensed">Min Years Licensed</label>
                     <input type="text" class="form-control" name="yearsLicensed" placeholder="Years Licensed">
                 </div>       
                 <div class="form-group">
-                    <label for="avgStars">Average Stars</label>
+                    <label for="avgStars">Min Average Rating </label>
                     <select name = "avgStars">
-                        <option value=""></option>
+                        <option value="">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>

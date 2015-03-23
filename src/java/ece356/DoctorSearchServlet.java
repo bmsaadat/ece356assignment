@@ -55,6 +55,9 @@ public class DoctorSearchServlet extends HttpServlet {
         if(request.getParameter("firstname") != null && request.getParameter("firstname") != "")
             doctorParam.put("first_name", request.getParameter("firstname"));
         
+        if(request.getParameter("middleinitial") != null && request.getParameter("middleinitial") != "")
+            doctorParam.put("middle_initial", request.getParameter("middleinitial")); 
+        
         if(request.getParameter("lastname") != null && request.getParameter("lastname") != "")
             doctorParam.put("last_name", request.getParameter("lastname")); 
         
@@ -62,7 +65,7 @@ public class DoctorSearchServlet extends HttpServlet {
             doctorParam.put("gender", request.getParameter("gender"));
         
         if(request.getParameter("streetNumber") != null && request.getParameter("streetNumber") != "")
-            doctorParam.put("street_num", request.getParameter("streetNumber"));
+            doctorParam.put("street_number", request.getParameter("streetNumber"));
         
         if(request.getParameter("streetName") != null && request.getParameter("streetName") != "")
                 doctorParam.put("street_name", request.getParameter("streetName"));
@@ -93,6 +96,7 @@ public class DoctorSearchServlet extends HttpServlet {
         
         if(request.getParameter("reviewKeyword") != null && request.getParameter("reviewKeyword") != "")
             doctorParam.put("comment", request.getParameter("reviewKeyword"));
+        
         ArrayList<DoctorData> ret = UserDBAO.queryDoctor(doctorParam, user.userName.toString());        
         request.setAttribute("doctorList", ret);
     }
