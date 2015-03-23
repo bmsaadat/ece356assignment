@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.util.*;
 
 public class UserDBAO {
 
@@ -106,7 +107,7 @@ public class UserDBAO {
             pstmt.executeUpdate();
             pstmt = con.prepareStatement("INSERT INTO doctorSpecialization VALUES ('abishek', 6);");
             pstmt.executeUpdate(); 
-            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (3, 'Bay St.', 1329, NULL, 'Toronto', 'Ontario', 'Y6T6K4', 'abishek');");
+            pstmt = con.prepareStatement("INSERT INTO workAddress VALUES (3, 'Bay St.', 1329, 8, 'Toronto', 'Ontario', 'Y6T6K4', 'abishek');");
             pstmt.executeUpdate();
             
             salt = generateSalt(); 
@@ -493,8 +494,11 @@ public class UserDBAO {
             ArrayList<String> keys = new ArrayList<String>(doctorParam.keySet()); 
             ArrayList<String> values = new ArrayList<String>(doctorParam.values()); 
 
+            HashMap<Integer, Integer> h1 = new HashMap<>();
+            int counter=0; 
             if (!keys.isEmpty()) 
             {
+                counter++; 
                 query = query + " where";
                 for (String key : keys) 
                 {
@@ -506,8 +510,10 @@ public class UserDBAO {
                     else
                     {
                         query = query + " " + key + " >= ?";
-                        query += " AND";                       
+                        query += " AND";   
+                        h1.put(counter, counter); 
                     }
+                    counter++;
                 }
                 query = query.substring(0, query.length()-4);
                 System.out.println(query);
@@ -518,21 +524,21 @@ public class UserDBAO {
             pstmt = con.prepareStatement(query);
             
             if (!values.isEmpty()) {
-                int count = 1;
+                counter = 1;
                 for(String value : values) 
                 {
-                    if(value.getClass().getName().equals("String"))
+                    if(!h1.containsKey(counter))
                     {
-                        pstmt.setString(count, "%" + value + "%");
+                        pstmt.setString(counter, "%" + value + "%");
                     }
                     else
                     {
-                        pstmt.setString(count, value);
+                        pstmt.setString(counter, value);
                     }
-                    count++;
+                    counter++;
                 }
             }
-
+            System.out.println(pstmt);
             ResultSet resultSet;
             resultSet = pstmt.executeQuery();           
 
@@ -541,6 +547,7 @@ public class UserDBAO {
             while (resultSet.next()) {
                  DoctorData doctor = new DoctorData();
                  doctor.firstName = resultSet.getString("first_name");
+                 doctor.middleInitial = resultSet.getString("middle_initial");
                  doctor.lastName = resultSet.getString("last_name");
                  doctor.gender = resultSet.getString("gender");
                  doctor.averageRating = resultSet.getInt("averageRating");

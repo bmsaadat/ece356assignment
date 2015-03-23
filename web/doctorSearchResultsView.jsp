@@ -35,6 +35,9 @@
                             First Name
                         </th>
                         <th>
+                           Middle Initial
+                        </th>
+                        <th>
                            Last Name
                         </th>
                         <th>
@@ -57,6 +60,9 @@
                         <td>
                             <%= doctor.getFirstName() %>
                         </td>
+                        <td>
+                            <%= doctor.getMiddleInitial()%>
+                        </td>                        
                         <td>
                             <%= doctor.getLastName()%>
                         </td>
