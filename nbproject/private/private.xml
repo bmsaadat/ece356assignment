@@ -3,27 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientSearchResultsView.jsp</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/SyncDataServlet.java</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/UserData.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/FriendShipStatus.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/PatientSearchServlet.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorSearchView.jsp</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/patientAddFriendServlet.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/DoctorProfileServlet.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/PatientData.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/WorkAddressData.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/logout.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/META-INF/context.xml</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/DoctorSearchServlet.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/conf/MANIFEST.MF</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientViewRequests.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorReviewView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/ReviewData.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorProfileView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorSearchResultsView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientSearchResultsView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/SyncDataServlet.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/UserData.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/FriendshipViewStatus.java</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/LogoutServlet.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/index.jsp</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/DoctorData.java</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/WorkAddressData.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/setup/sun-resources.xml</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientAddFriendView.jsp</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/META-INF/context.xml</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/conf/MANIFEST.MF</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorReviewView.jsp</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/UserDBAO.java</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/ReviewData.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/WriteReviewServlet.java</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/WEB-INF/web.xml</file>
-            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/doctorProfileView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientLoggedInView.jsp</file>
             <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/web/patientSearchView.jsp</file>
+            <file>file:/Users/behrozsaadat/Google%20Drive/UW/3B/ECE%20356/Group%20Assignment/GroupAssignment/ece356assignment/src/java/ece356/LoginServlet.java</file>
         </group>
     </open-files>
 </project-private>
