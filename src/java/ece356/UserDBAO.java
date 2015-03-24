@@ -694,7 +694,7 @@ public class UserDBAO {
             // Query who is already friends with the person logged in            
             String friendShipQuery = "select friend.recieved_username as friend from friend where sent_username = ? and friend.isAccepted=1" +
                               " union" +
-                              " select friend.recieved_username as friend from friend where recieved_username = ? and friend.isAccepted=1";
+                              " select friend.sent_username as friend from friend where recieved_username = ? and friend.isAccepted=1";
             
             pstmt = con.prepareStatement(friendShipQuery);
             pstmt.setString(1, loggedInUser);
