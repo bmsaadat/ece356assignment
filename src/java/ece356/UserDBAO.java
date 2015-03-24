@@ -520,7 +520,7 @@ public class UserDBAO {
                 query = query + " where";
                 for (String key : keys) 
                 {
-                    if(!key.equals("averageRating") || key.equals("yearsLicensed"))
+                    if(key.equals("averageRating") || key.equals("yearsLicensed"))
                     {
                         query = query + " " + key + " >= ?";
                         query += " AND";   
