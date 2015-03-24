@@ -51,7 +51,12 @@ public class DoctorProfileServlet extends HttpServlet {
         //if (hideInformationString == null) hideInformationString = "1";
         HttpSession session = request.getSession();
         UserData user = (UserData) session.getAttribute("userData"); 
-        DoctorData ret = UserDBAO.queryDoctor(user.userName);
+        DoctorData ret;
+        if (user.getUserType() == "doctor") {
+            ret = UserDBAO.queryDoctor(user.userName);
+        } else {
+            ret = UserDBAO.queryDoctor(request.getParameter("doctor"));
+        }
         session.setAttribute("doctorData", ret);
         //request.setAttribute("patientViewingDoctor", hideInformationString);
         

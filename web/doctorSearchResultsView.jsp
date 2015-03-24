@@ -50,6 +50,9 @@
                         <th>
                             Number of Reviews
                         </th>
+                        <th>
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +78,9 @@
                         </td>
                         <td>
                             <%= doctor.getNumberOfReviews()%>
+                        </td>
+                        <td>
+                            <a href="DoctorProfileServlet?doctor=<%=doctor.getUserName()%>">View Profile </a>
                         </td>
                     </tr>
                     
