@@ -842,6 +842,39 @@ from friend where friend.sent_username = 'pat_bob'*/
         return null;
     }
     
+    public static ArrayList<String> querySpecializationTypes() 
+            throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = getConnection();
+
+            // Query for general doctor information
+            String query = "select specTypeName from specializationType";
+            pstmt = con.prepareStatement(query);
+
+            ResultSet resultSet;
+            resultSet = pstmt.executeQuery();
+            
+            ArrayList<String> specTypeList = new ArrayList<String>();
+            while (resultSet.next()) {
+                String user = resultSet.getString("specTypeName");
+                specTypeList.add(user);
+            }
+            return specTypeList;
+        } catch (Exception e) {
+            System.out.println("EXCEPTION:%% " + e);
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+    
     public static boolean isLoggedIn(HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserData loggedInUser = (UserData) session.getAttribute("userData");

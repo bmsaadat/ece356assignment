@@ -4,6 +4,7 @@
     Author     : behrozsaadat
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -66,7 +67,17 @@
                 </div>
                 <div class="form-group">
                     <label for="specialization">Specialization</label>
-                    <input type="text" class="form-control" name="specialization" placeholder="Specialization">
+                    <select name = "specialization">
+                    <%  
+                        ArrayList<String> specTypes = (ArrayList<String>)session.getAttribute("specTypes");
+                        if (!specTypes.isEmpty()) {
+                            for (String spec : specTypes) { %>
+                            <option value=""><%= spec%></option>
+                    <%    
+                            }      
+                        }
+                    %>
+                   </select> 
                 </div>               
                 <div class="form-group">
                     <label for="yearsLicensed">Min Years Licensed</label>

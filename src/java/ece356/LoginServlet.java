@@ -7,6 +7,7 @@ package ece356;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,14 @@ public class LoginServlet extends HttpServlet {
                 UserData ret = UserDBAO.queryUser(username, password, salt);
                 if(ret != null)
                 {
+                    
+                    ArrayList<String>specTypes = UserDBAO.querySpecializationTypes();
+                    if (specTypes == null) {
+                        url = "index.jsp";
+                        return url;
+                    } else {
+                        request.setAttribute("specTypes", specTypes);
+                    }
                     request.setAttribute("userData", ret);
                     HttpSession session = request.getSession();
                     session.setAttribute("userData", ret);
