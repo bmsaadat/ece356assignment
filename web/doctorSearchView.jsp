@@ -77,11 +77,13 @@
                 <div class="form-group">
                     <label for="specialization">Specialization</label>
                     <select name = "specialization">
+                        <option value=""></option>
+
                     <%  
                         ArrayList<String> specTypes = (ArrayList<String>)session.getAttribute("specTypes");
                         if (!specTypes.isEmpty()) {
                             for (String spec : specTypes) { %>
-                            <option value=""><%= spec%></option>
+                            <option value="<%= spec%>"><%= spec%></option>
                     <%    
                             }      
                         }

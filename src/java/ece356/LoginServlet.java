@@ -54,18 +54,23 @@ public class LoginServlet extends HttpServlet {
                 UserData ret = UserDBAO.queryUser(username, password, salt);
                 if(ret != null)
                 {
+
+                    request.setAttribute("userData", ret);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userData", ret);
+                            
+                    ArrayList<String> specTypes = UserDBAO.querySpecializationTypes();
                     
-                    ArrayList<String>specTypes = UserDBAO.querySpecializationTypes();
                     if (specTypes == null) {
                         url = "index.jsp";
                         return url;
                     } else {
-                        request.setAttribute("specTypes", specTypes);
+                        session.setAttribute("specTypes", specTypes);
                     }
-                    request.setAttribute("userData", ret);
-                    HttpSession session = request.getSession();
-                    session.setAttribute("userData", ret);
-                    UserData u = (UserData)session.getAttribute("userData");  
+                    UserData u = (UserData)session.getAttribute("userData"); 
+                    ArrayList<String> st = (ArrayList<String>)session.getAttribute("specTypes");
+
+                    //specTypes u = (specTypes)session.getAttribute("userData"); 
                     
                     if(ret.userType.equals("doctor"))
                     {
