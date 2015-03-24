@@ -33,14 +33,21 @@
         </script>
 
     </head>
+    <%! UserData loggedInUser;%>
+    <% loggedInUser = (UserData) session.getAttribute("userData"); %>
 </head>
 <%! ArrayList<UserData> userData;%>
 <% userData = (ArrayList<UserData>) request.getAttribute("userData");
     if (session.getAttribute("userData") == null) {
         response.sendRedirect("index.jsp");
             return;
-        }%>
-
+        }
+    
+    if(!loggedInUser.getUserType().equals("patient")){
+                response.sendRedirect("AccessDenied.jsp");
+                return; 
+            }
+    %>
 <body>
     <div class="container">  
         <%@ include file="logout.jsp" %>
@@ -63,14 +70,6 @@
                 <%
                     for (UserData user : userData) {                        
                 %>
-                <%
-                    if(!user.getUserType().equals("patient")){
-                        response.sendRedirect("AccessDenied.jsp");
-                        return; 
-                    }
-                %>
-                
-                
                 <tr>
                     <td><%= user.getUserName()%></td> 
                     <td><%= user.getEmailAddress()%></td> 
