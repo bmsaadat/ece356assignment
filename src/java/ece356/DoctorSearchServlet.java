@@ -52,49 +52,49 @@ public class DoctorSearchServlet extends HttpServlet {
         UserData user = (UserData)session.getAttribute("userData"); 
         HashMap<String, String> doctorParam = new HashMap<String, String>(); 
         
-        if(request.getParameter("firstname") != null && request.getParameter("firstname") != "")
+        if(request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty())
             doctorParam.put("first_name", request.getParameter("firstname"));
         
-        if(request.getParameter("middleinitial") != null && request.getParameter("middleinitial") != "")
+        if(request.getParameter("middleinitial") != null && !request.getParameter("middleinitial").isEmpty())
             doctorParam.put("middle_initial", request.getParameter("middleinitial")); 
         
-        if(request.getParameter("lastname") != null && request.getParameter("lastname") != "")
+        if(request.getParameter("lastname") != null && !request.getParameter("lastname").isEmpty())
             doctorParam.put("last_name", request.getParameter("lastname")); 
         
-        if(request.getParameter("gender") != null && request.getParameter("gender") != "") 
+        if(request.getParameter("gender") != null && !request.getParameter("gender").isEmpty()) 
             doctorParam.put("gender", request.getParameter("gender"));
         
-        if(request.getParameter("streetNumber") != null && request.getParameter("streetNumber") != "")
+        if(request.getParameter("streetNumber") != null && !request.getParameter("streetNumber").isEmpty())
             doctorParam.put("street_number", request.getParameter("streetNumber"));
         
-        if(request.getParameter("streetName") != null && request.getParameter("streetName") != "")
+        if(request.getParameter("streetName") != null && !request.getParameter("streetName").isEmpty())
                 doctorParam.put("street_name", request.getParameter("streetName"));
         
-        if(request.getParameter("unitNumber") != null && request.getParameter("unitNumber") != "")
+        if(request.getParameter("unitNumber") != null && !request.getParameter("unitNumber").isEmpty())
             doctorParam.put("street_unit_number", request.getParameter("unitNumber"));
         
-        if(request.getParameter("city") != null && request.getParameter("city") != "")    
+        if(request.getParameter("city") != null && !request.getParameter("city").isEmpty())    
             doctorParam.put("city", request.getParameter("city"));
         
-        if(request.getParameter("state") != null && request.getParameter("state") != "") 
+        if(request.getParameter("state") != null && !request.getParameter("state").isEmpty()) 
             doctorParam.put("state", request.getParameter("state"));
         
-        if(request.getParameter("postalCode") != null && request.getParameter("postalCode") != "")
+        if(request.getParameter("postalCode") != null && !request.getParameter("postalCode").isEmpty())
             doctorParam.put("postal_code", request.getParameter("postalCode"));
         
-        if(request.getParameter("specialization") != null && request.getParameter("specialization") != "")
+        if(request.getParameter("specialization") != null && !request.getParameter("specialization").isEmpty())
             doctorParam.put("spectypeName", request.getParameter("specialization"));   
         
-        if(request.getParameter("yearsLicensed") != null && request.getParameter("yearsLicensed") != "")      
+        if(request.getParameter("yearsLicensed") != null && !request.getParameter("yearsLicensed").isEmpty())      
             doctorParam.put("yearsLicensed", request.getParameter("yearsLicensed"));
         
-        if(request.getParameter("avgStars") != null && request.getParameter("avgStars") != "")        
+        if(request.getParameter("avgStars") != null && !request.getParameter("avgStars").isEmpty())        
             doctorParam.put("averageRating", request.getParameter("avgStars"));
         
-        if(request.getParameter("reviewByFriends") != null && request.getParameter("reviewByFriends") != "")
+        if(request.getParameter("reviewByFriends") != null && !request.getParameter("reviewByFriends").isEmpty())
             doctorParam.put("reviewByFriends", request.getParameter("reviewByFriends"));   
         
-        if(request.getParameter("reviewKeyword") != null && request.getParameter("reviewKeyword") != "")
+        if(request.getParameter("reviewKeyword") != null && !request.getParameter("reviewKeyword").isEmpty())
             doctorParam.put("comment", request.getParameter("reviewKeyword"));
         
         ArrayList<DoctorData> ret = UserDBAO.queryDoctor(doctorParam, user.userName.toString());        
