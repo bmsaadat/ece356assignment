@@ -6,6 +6,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="ece356.DoctorData"%>
+<%@page import="ece356.UserData"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,11 +18,19 @@
         <title>Doctor Search Results</title>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
     </head>
+    <% UserData user = (UserData) session.getAttribute("userData"); %>
     <body>
         <%
-            if (session.getAttribute("userData") == null) {
+            if (user == null) {
                 response.sendRedirect("index.jsp");
                 return;
+            }
+        %>
+        
+        <%
+            if(!user.getUserType().equals("patient")){
+                response.sendRedirect("AccessDenied.jsp");
+                return; 
             }
         %>
 

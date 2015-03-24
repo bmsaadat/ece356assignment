@@ -63,7 +63,12 @@
                 <%
                     for (UserData user : userData) {                        
                 %>
-
+                <%
+                    if(!user.getUserType().equals("patient")){
+                        response.sendRedirect("AccessDenied.jsp");
+                        return; 
+                    }
+                %>
                 
                 
                 <tr>

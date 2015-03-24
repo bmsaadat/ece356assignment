@@ -33,6 +33,8 @@
         </script>
         
     </head>
+    <%! UserData user;%>
+    <% user = (UserData) session.getAttribute("userData"); %>
     <body>
         <%
             if(session.getAttribute("userData") == null){
@@ -41,6 +43,12 @@
             }
         %>
         
+        <%
+            if(!user.getUserType().equals("patient")){
+                response.sendRedirect("AccessDenied.jsp");
+                return; 
+            }
+        %>
         <div class="container">  
         <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search Results: </h2>
