@@ -6,6 +6,7 @@
 <%@page import="ece356.FriendShipStatus"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="ece356.PatientData"%>
+<%@page import="ece356.UserData"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -65,7 +66,10 @@
                 <tbody>
                     <% patientList = (ArrayList<PatientData>) request.getAttribute("patientList"); %>
                     <% for (PatientData patient : patientList) {%>
-                    
+                    <% if( patient.getUserName().equals( ( (UserData) session.getAttribute("userData") ).getUserName())) {
+                        continue;
+                        }
+                    %>
                     <tr>
                         <td>
                             <% if(patient.getFriendShipStatusWithLoggedInUser() == FriendShipStatus.REQUEST_SENT) { %>
