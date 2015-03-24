@@ -62,8 +62,13 @@
             <tbody>
                 <%
                     for (UserData user : userData) {
+                        if (user.getUserName().equals(((UserData)session.getAttribute("userData")).getUserName())) {
+                            continue;
+                        }
                 %>
 
+                
+                
                 <tr>
                     <td><%= user.getUserName()%></td> 
                     <td><%= user.getEmailAddress()%></td> 
