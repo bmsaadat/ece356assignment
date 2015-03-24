@@ -34,7 +34,7 @@ public class WriteReviewServlet extends HttpServlet {
         if (!UserDBAO.isLoggedIn(request)) return;
         // Hardcoded reviewer for now
         String doctorUsername = request.getParameter("doctorUsername");
-        String patientUsername = "bmsaadat_patient";        
+        String patientUsername = request.getParameter("patientUsername");       
         String rating = request.getParameter("rating");
         String comment = request.getParameter("comment");
         ReviewData review = new ReviewData();
@@ -47,7 +47,7 @@ public class WriteReviewServlet extends HttpServlet {
         String url;
         try{
             UserDBAO.writeReview(review);
-            url = "/DoctorProfileServlet";
+            url = "/DoctorProfileServlet?doctor="+doctorUsername;
         } catch (Exception e) {
             url = "/error.jsp";
         }

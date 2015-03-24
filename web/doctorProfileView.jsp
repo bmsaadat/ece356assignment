@@ -41,7 +41,7 @@
             %>
 
             <%
-                if (user.getUserType() == "patient") {
+                if (user.getUserType().equals("patient")) {
                     doctorData.setEmailAddress(null);
                 }
             %>
@@ -134,7 +134,7 @@
             <h2 class="page-header">Reviews
 
                 <%
-                    if (user.getUserType() == "patient") {
+                    if (user.getUserType().equals("patient")) {
                 %>
                 <button class="btn btn-default pull-right" type="submit" data-toggle="modal" data-target="#writeReviewModal">Write Review</button>
                 <%
@@ -201,7 +201,7 @@
                         <h4 class="modal-title">Write a review for this doctor</h4>
                     </div>
                     <div class="modal-body">
-                        <form id="writeReviewForm" action="WriteReviewServlet?doctorUsername=<%= doctorData.getUserName()%>" method="POST">
+                        <form id="writeReviewForm" action="WriteReviewServlet?doctorUsername=<%= doctorData.getUserName()%>&patientUsername=<%= user.getUserName()%>" method="POST">
                             <select class="form-control" name="rating">
                                 <option>1</option>
                                 <option>2</option>
