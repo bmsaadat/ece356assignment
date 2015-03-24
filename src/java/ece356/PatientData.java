@@ -15,6 +15,7 @@ public class PatientData extends UserData{
     String state;
     int numberOfReviews;
     Timestamp lastReviewDate;
+    FriendShipStatus friendShipStatusWithLoggedInUser;
     
     public String getCity() {
         return city;
@@ -47,5 +48,14 @@ public class PatientData extends UserData{
     public void setLastReviewDate(Timestamp lastReviewDate) {
         this.lastReviewDate = lastReviewDate;
     }
+
+    public FriendShipStatus getFriendShipStatusWithLoggedInUser() {
+        return friendShipStatusWithLoggedInUser;
+    }
+
+    public void setFriendShipStatusWithLoggedInUser(FriendShipStatus friendShipStatusWithLoggedInUser) {
+        this.friendShipStatusWithLoggedInUser = friendShipStatusWithLoggedInUser;
+    }
+    
     
 }

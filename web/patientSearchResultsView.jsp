@@ -3,6 +3,7 @@
     Created on : Mar 9, 2015, 11:55:00 AM
     Author     : behrozsaadat
 --%>
+<%@page import="ece356.FriendShipStatus"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="ece356.PatientData"%>
 
@@ -23,7 +24,8 @@
                     
                     var username=event.target.id;
                  $.get('patientAddFriendServlet',{user:username},function(responseText) { 
-                        alert(responseText);
+                        //alert(responseText);
+                        location.reload();
                     });
                 });
             });
@@ -67,7 +69,9 @@
                     
                     <tr>
                         <td>
-                        <button id="<%= patient.getUserName() %>" class="btn btn-default btn-sm addButton" type="submit" data-toggle="modal">Add Friend</button>
+                            <% if(patient.getFriendShipStatusWithLoggedInUser() == FriendShipStatus.REQUEST_SENT) { %>
+                                <button id="<%= patient.getUserName() %>" class="btn btn-default btn-sm addButton" type="submit" data-toggle="modal">Add Friend</button>
+                            <% } %>
                         </td>
                         <td>
                             <%= patient.getUserName()%>
