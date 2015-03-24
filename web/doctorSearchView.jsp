@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="ece356.UserData"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,14 +15,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Doctor Search</title>
     </head>
+    <% UserData user = (UserData) session.getAttribute("userData"); %>
     <body>
         <%
-            if(session.getAttribute("userData") == null){
+            if(user == null){
                 response.sendRedirect("index.jsp");
                 return; 
             }
         %>
         
+        <%
+            if(!user.getUserType().equals("patient")){
+                response.sendRedirect("AccessDenied.jsp");
+                return; 
+            }
+        %>
+       
         <div class="container">  
             <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search For Doctors: </h2>

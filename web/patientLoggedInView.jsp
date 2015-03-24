@@ -14,6 +14,8 @@
 
         <title>JSP Page</title>
     </head>
+    <%! UserData user;%>
+    <% user = (UserData) session.getAttribute("userData"); %>
     <body>
         <%
             if(session.getAttribute("userData") == null){
@@ -21,8 +23,13 @@
                 return; 
             }
         %>
-        <%! UserData user;%>
-        <% user = (UserData) session.getAttribute("userData"); %>
+        
+        <%
+            if(!user.getUserType().equals("patient")){
+                response.sendRedirect("AccessDenied.jsp");
+                return; 
+            }
+        %>
         <div class="container">
             <%@ include file="logout.jsp" %>
             <h2 class="page-header"><%= user.getFirstName()%> <%= user.getLastName()%></h2>
