@@ -19,6 +19,14 @@
         <h1 ><ul>Hospital Management System</ul></h1>
 
       <form class="form-signin" action="LoginServlet" method="POST">
+    <%  String error_message_flag = request.getParameter("error_message_flag"); 
+          if(error_message_flag != null && error_message_flag.equals("1"))
+          {
+              %>
+                <p class="bg-danger">Invalid Login!</p>
+              <%
+          }
+      %>
         <h3 >Sign-in:</h3>
         <label for="inputUsername" class="sr-only">Username</label>
         <input id="inputUsername" class="form-control" placeholder="Username" name="user_name" required autofocus>
@@ -30,10 +38,10 @@
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+        
 
-    </div> <!-- /container -->
-    </body>
-    
+            </form>
+          </div> <!-- /container -->
+       </body>
+      </html>
 
-</html>

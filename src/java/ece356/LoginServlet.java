@@ -69,12 +69,12 @@ public class LoginServlet extends HttpServlet {
                 }
                 else
                 {
-                    url = "/index.jsp";
+                    url = "/index.jsp?error_message_flag=1";
                 }
             }
             else
             {
-                url = "/index.jsp";
+                url = "/index.jsp?error_message_flag=1";
             } 
             return url;    
         }
