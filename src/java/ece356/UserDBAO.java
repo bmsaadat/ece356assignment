@@ -594,7 +594,7 @@ public class UserDBAO {
                  doctor.middleInitial = resultSet.getString("middle_initial");
                  doctor.lastName = resultSet.getString("last_name");
                  doctor.gender = resultSet.getString("gender");
-                 doctor.averageRating = resultSet.getInt("averageRating");
+                 doctor.averageRating = resultSet.getDouble("averageRating");
                  doctor.numberOfReviews = resultSet.getInt("numberOfReviews");
                  ret.add(doctor);
              }
@@ -691,17 +691,31 @@ public class UserDBAO {
             con = getConnection();
             ResultSet resultSet;
 
-            // Query who is friends with the person logged in
-            String friendShipQuery = "select friend.recieved_username as friend" +
-                                       " from friend where friend.sent_username = ? or (friend.recieved_username = ? and friend.isAccepted=1)";
+            // Query who is already friends with the person logged in            
+            String friendShipQuery = "select friend.recieved_username as friend from friend where sent_username = ? and friend.isAccepted=1" +
+                              " union" +
+                              " select friend.recieved_username as friend from friend where recieved_username = ? and friend.isAccepted=1";
+            
             pstmt = con.prepareStatement(friendShipQuery);
             pstmt.setString(1, loggedInUser);
             pstmt.setString(2, loggedInUser);
 
             resultSet = pstmt.executeQuery();
-            ArrayList<String> friends = new ArrayList();
+            ArrayList<String> alreadyFriends = new ArrayList();
             while (resultSet.next()) {
-                friends.add(resultSet.getString("friend"));
+                alreadyFriends.add(resultSet.getString("friend"));
+            }
+            
+            // Query if a request has already been sent to this person
+            friendShipQuery = "select friend.recieved_username as friend from friend where sent_username = ? and friend.isAccepted=0";
+            
+            pstmt = con.prepareStatement(friendShipQuery);
+            pstmt.setString(1, loggedInUser);
+
+            resultSet = pstmt.executeQuery();
+            ArrayList<String> waitingForRequest = new ArrayList();
+            while (resultSet.next()) {
+                waitingForRequest.add(resultSet.getString("friend"));
             }
             
             
@@ -758,8 +772,10 @@ public class UserDBAO {
                 patient.lastReviewDate = resultSet.getTimestamp("lastReviewDate");
                 ret.add(patient);
                 
-                if (!friends.contains(patient.getUserName())) {
-                    patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.REQUEST_SENT);
+                if (alreadyFriends.contains(patient.getUserName())) {
+                    patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.ALREADY_FRIENDS);
+                } else if (waitingForRequest.contains(patient.getUserName())){
+                    patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.WAITING_FOR_ACCEPT);
                 } else {
                     patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.NOT_FRIENDS);
                 }             
