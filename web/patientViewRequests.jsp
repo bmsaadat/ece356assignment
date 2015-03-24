@@ -61,10 +61,7 @@
             </thead>
             <tbody>
                 <%
-                    for (UserData user : userData) {
-                        if (user.getUserName().equals(((UserData)session.getAttribute("userData")).getUserName())) {
-                            continue;
-                        }
+                    for (UserData user : userData) {                        
                 %>
 
                 
@@ -83,6 +80,11 @@
                 %>
             </tbody>
         </table>
+            <% if (userData.isEmpty()) { %>
+            <div class="well center-block">
+                Sorry no results were found for this search.
+            </div>
+            <% }%>
     </div>
 </body>
 </html>
