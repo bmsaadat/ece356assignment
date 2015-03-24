@@ -52,7 +52,7 @@ public class DoctorProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserData user = (UserData) session.getAttribute("userData"); 
         DoctorData ret;
-        if (user.getUserType() == "doctor") {
+        if (user.getUserType().equals("doctor")) {
             ret = UserDBAO.queryDoctor(user.userName);
         } else {
             ret = UserDBAO.queryDoctor(request.getParameter("doctor"));
