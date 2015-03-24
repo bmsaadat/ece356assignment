@@ -594,7 +594,7 @@ public class UserDBAO {
                  doctor.middleInitial = resultSet.getString("middle_initial");
                  doctor.lastName = resultSet.getString("last_name");
                  doctor.gender = resultSet.getString("gender");
-                 doctor.averageRating = resultSet.getInt("averageRating");
+                 doctor.averageRating = resultSet.getDouble("averageRating");
                  doctor.numberOfReviews = resultSet.getInt("numberOfReviews");
                  ret.add(doctor);
              }
