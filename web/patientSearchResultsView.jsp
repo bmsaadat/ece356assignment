@@ -72,8 +72,12 @@
                     %>
                     <tr>
                         <td>
-                            <% if(patient.getFriendShipStatusWithLoggedInUser() == FriendShipStatus.REQUEST_SENT) { %>
+                            <% if(patient.getFriendShipStatusWithLoggedInUser() == FriendShipStatus.NOT_FRIENDS) { %>
                                 <button id="<%= patient.getUserName() %>" class="btn btn-default btn-sm addButton" type="submit" data-toggle="modal">Add Friend</button>
+                            <% } else if (patient.getFriendShipStatusWithLoggedInUser() == FriendShipStatus.ALREADY_FRIENDS) { %>
+                                Friends
+                            <% } else { %>
+                                Request Sent
                             <% } %>
                         </td>
                         <td>
