@@ -570,6 +570,7 @@ public class UserDBAO {
 
             while (resultSet.next()) {
                  DoctorData doctor = new DoctorData();
+                 doctor.userName = resultSet.getString("username");
                  doctor.firstName = resultSet.getString("first_name");
                  doctor.middleInitial = resultSet.getString("middle_initial");
                  doctor.lastName = resultSet.getString("last_name");
