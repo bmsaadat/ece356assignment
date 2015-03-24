@@ -15,7 +15,7 @@ public class DoctorData extends UserData{
     ArrayList<WorkAddressData> workAddressList;
     ArrayList<ReviewData> reviewList;
     int yearsLicensed;
-    int averageRating;
+    double averageRating;
     int numberOfReviews;
 
     public String getGender() {
@@ -50,11 +50,11 @@ public class DoctorData extends UserData{
         this.yearsLicensed = yearsLicensed;
     }
 
-    public int getAverageRating() {
+    public double getAverageRating() {
         return averageRating;
     }
 
-    public void setAverageRating(int averageRating) {
+    public void setAverageRating(double averageRating) {
         this.averageRating = averageRating;
     }
 
