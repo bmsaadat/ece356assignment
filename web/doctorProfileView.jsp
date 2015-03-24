@@ -209,7 +209,7 @@
                                 <option>4</option>
                                 <option>5</option>
                             </select>
-                            <textarea class="form-control" rows="3" name="comment"></textarea>
+                            <textarea id="commentBox" class="form-control" rows="3" name="comment"></textarea>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -223,5 +223,18 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+            $('#writeReviewForm').on('submit', function(e){
+                e.preventDefault();
+                var len = $('#commentBox').val().trim().length;
+                if (len > 0) {
+                    this.submit();
+                } else {
+                    alert("You must write a valid comment to review this doctor!");
+                }
+            });
+            });
+        </script>
     </body>
 </html>

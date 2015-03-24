@@ -43,7 +43,7 @@
         <div class="container">  
         <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search Results: </h2>
-            
+            <%! ArrayList<PatientData> patientList;%>
             <table class="table">
                 <thead>
                     <tr>
@@ -63,7 +63,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%! ArrayList<PatientData> patientList;%>
                     <% patientList = (ArrayList<PatientData>) request.getAttribute("patientList"); %>
                     <% for (PatientData patient : patientList) {%>
                     
@@ -93,6 +92,11 @@
                 </tbody>
             </table>
             
+            <% if(patientList.isEmpty()) { %>
+            <div class="well center-block">
+                Sorry no results were found for this search.
+            </div>
+            <% } %>
             
         </div>
     </body>

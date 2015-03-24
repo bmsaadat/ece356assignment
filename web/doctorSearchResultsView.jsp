@@ -19,16 +19,17 @@
     </head>
     <body>
         <%
-            if(session.getAttribute("userData") == null){
+            if (session.getAttribute("userData") == null) {
                 response.sendRedirect("index.jsp");
-                return; 
+                return;
             }
         %>
-        
+
         <div class="container">  
             <%@ include file="logout.jsp" %>
             <h2 class="page-header">Search Results: </h2>
-            
+            <%! ArrayList<DoctorData> doctorList;%>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -36,10 +37,10 @@
                             First Name
                         </th>
                         <th>
-                           Middle Initial
+                            Middle Initial
                         </th>
                         <th>
-                           Last Name
+                            Last Name
                         </th>
                         <th>
                             Gender
@@ -56,13 +57,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%! ArrayList<DoctorData> doctorList;%>
                     <% doctorList = (ArrayList<DoctorData>) request.getAttribute("doctorList"); %>
                     <% for (DoctorData doctor : doctorList) {%>
-                    
+
                     <tr>
                         <td>
-                            <%= doctor.getFirstName() %>
+                            <%= doctor.getFirstName()%>
                         </td>
                         <td>
                             <%= doctor.getMiddleInitial()%>
@@ -83,10 +83,15 @@
                             <a href="DoctorProfileServlet?doctor=<%=doctor.getUserName()%>">View Profile </a>
                         </td>
                     </tr>
-                    
+
                     <% }%>
                 </tbody>
             </table>
+            <% if (doctorList.isEmpty()) { %>
+            <div class="well center-block">
+                Sorry no results were found for this search.
+            </div>
+            <% }%>
         </div>
     </body>
 </html>
