@@ -577,6 +577,7 @@ public class UserDBAO {
 
             while (resultSet.next()) {
                  DoctorData doctor = new DoctorData();
+                 doctor.userName = resultSet.getString("username");
                  doctor.firstName = resultSet.getString("first_name");
                  doctor.middleInitial = resultSet.getString("middle_initial");
                  doctor.lastName = resultSet.getString("last_name");
@@ -669,32 +670,49 @@ public class UserDBAO {
 
             return ret;*/
    
-    public static ArrayList<PatientData> queryPatients(String username, String state, String city)
+    public static ArrayList<PatientData> queryPatients(String username, String state, String city, String loggedInUser)
             throws ClassNotFoundException, SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ArrayList<PatientData> ret;
         try {
             con = getConnection();
+            ResultSet resultSet;
+
+            // Query who is friends with the person logged in
+            String friendShipQuery = "select friend.recieved_username as friend" +
+                                       " from friend where friend.sent_username = ? or (friend.recieved_username = ? and friend.isAccepted=1)";
+            pstmt = con.prepareStatement(friendShipQuery);
+            pstmt.setString(1, loggedInUser);
+            pstmt.setString(2, loggedInUser);
+
+            resultSet = pstmt.executeQuery();
+            ArrayList<String> friends = new ArrayList();
+            while (resultSet.next()) {
+                friends.add(resultSet.getString("friend"));
+            }
+            
+            
+            
             
             ArrayList<String> keys = new ArrayList();
             ArrayList<String> values = new ArrayList();
-            if (username != null && username != "") {
+            if (username != null && !username.equals("")) {
                 keys.add("patient_username");
                 values.add(username);
             }
             
-            if (state != null && state != "") {
+            if (state != null && !state.equals("")) {
                 keys.add("home_address_state");
                 values.add(state);
             }
             
-            if (city != null && city != "") {
+            if (city != null && !city.equals("")) {
                 keys.add("home_address_city");
                 values.add(city);
             }
             
-
+            
             // Query for general doctor information
             String query = "SELECT * FROM patientSearchView";
             if (!keys.isEmpty()) {
@@ -716,11 +734,9 @@ public class UserDBAO {
                 }
             }
 
-            ResultSet resultSet;
             resultSet = pstmt.executeQuery();           
 
             ret = new ArrayList();
-
             while (resultSet.next()) {
                 PatientData patient = new PatientData();
                 patient.userName = resultSet.getString("patient_username");
@@ -729,8 +745,23 @@ public class UserDBAO {
                 patient.numberOfReviews = resultSet.getInt("numberOfReviews");
                 patient.lastReviewDate = resultSet.getTimestamp("lastReviewDate");
                 ret.add(patient);
+                
+                if (!friends.contains(patient.getUserName())) {
+                    patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.REQUEST_SENT);
+                } else {
+                    patient.setFriendShipStatusWithLoggedInUser(FriendShipStatus.NOT_FRIENDS);
+                }             
             }
 
+            // Add friendship status for each patient
+            /*select friend.sent_username, friend.isAccepted as friend
+from friend where friend.recieved_username = 'pat_bob'
+union
+select friend.recieved_username, friend.isAccepted as friend 
+from friend where friend.sent_username = 'pat_bob'*/
+            
+            
+            
             return ret;
         } catch (Exception e) {
             System.out.println("EXCEPTION:%% " + e);

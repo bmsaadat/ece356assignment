@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -50,7 +51,11 @@ public class PatientSearchServlet extends HttpServlet {
         String username = request.getParameter("username");
         String city = request.getParameter("city");   
         String state = request.getParameter("state");
-        ArrayList<PatientData> ret = UserDBAO.queryPatients(username, state, city);        
+        
+        HttpSession session = request.getSession();
+        UserData loggedInUser = (UserData) session.getAttribute("userData"); 
+        
+        ArrayList<PatientData> ret = UserDBAO.queryPatients(username, state, city, loggedInUser.getUserName());        
         request.setAttribute("patientList", ret);
     }
 
