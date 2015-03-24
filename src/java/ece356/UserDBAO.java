@@ -491,18 +491,26 @@ public class UserDBAO {
         try { 
             con = getConnection();
             String query; 
-            if(doctorParam.containsKey("reviewByFriends") && doctorParam.get("reviewByFriends").equals("yes"))
+            boolean reviewByFriends = false; 
+            if(doctorParam.containsKey("reviewByFriends"))
             {
-                
-                query = "select * from doctorSearchView left join review on doctorSearchView.doc_spec_username = review.doc_username where patient_username in "+ 
+
+                if(doctorParam.get("reviewByFriends").equals("yes"))
+                {
+                    
+                query = "select * from doctorSearchView where username in (select username from doctorSearchView left join review on doctorSearchView.doc_spec_username = review.doc_username where doctorSearchView.patient_username in "+ 
                             "(select friend.sent_username as friend " +
-                            "from friend where friend.isAccepted = 1 AND friend.recieved_username = '%"+user+"%'" +
+                            "from friend where friend.isAccepted = 1 AND friend.recieved_username like '%"+user+"%'" +
                             "union " +
                             "select friend.recieved_username as friend " +
-                            "from friend where friend.isAccepted = 1 AND friend.sent_username = '%"+user+"%')" ; 
-                
+                            "from friend where friend.isAccepted = 1 AND friend.sent_username like '%"+user+"%'))" ; 
+                            reviewByFriends = true; 
+                }
+                else
+                {
+                    query = "SELECT * FROM doctorSearchView "; 
+                }        
                 doctorParam.remove("reviewByFriends"); 
-                                               // pstmt = con.prepareStatement(query);
             }
             else
             {
@@ -520,7 +528,11 @@ public class UserDBAO {
             if (!keys.isEmpty()) 
             {
                 counter++; 
-                query = query + " where";
+                if(!reviewByFriends)
+                    query = query + " where";
+                else
+                    query = query + " AND";
+   
                 for (String key : keys) 
                 {
                     if(key.equals("averageRating") || key.equals("yearsLicensed"))
