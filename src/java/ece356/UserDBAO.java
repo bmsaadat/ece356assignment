@@ -520,16 +520,22 @@ public class UserDBAO {
                 query = query + " where";
                 for (String key : keys) 
                 {
-                    if(!key.equals("averageRating") && !key.equals("yearsLicensed"))
-                    {
-                        query = query + " " + key + " LIKE ?";
-                        query += " AND";
-                    }
-                    else
+                    if(!key.equals("averageRating") || key.equals("yearsLicensed"))
                     {
                         query = query + " " + key + " >= ?";
                         query += " AND";   
                         h1.put(counter, counter); 
+                    }
+                    else if(key.equals("gender"))
+                    {
+                        query = query + " " + key + " = ?";
+                        query += " AND"; 
+                        h1.put(counter, counter); 
+                    }
+                    else
+                    {
+                        query = query + " " + key + " LIKE ?";
+                        query += " AND";
                     }
                     counter++;
                 }
@@ -545,13 +551,13 @@ public class UserDBAO {
                 counter = 1;
                 for(String value : values) 
                 {
-                    if(!h1.containsKey(counter))
+                    if(h1.containsKey(counter))
                     {
-                        pstmt.setString(counter, "%" + value + "%");
+                        pstmt.setString(counter, value);
                     }
                     else
                     {
-                        pstmt.setString(counter, value);
+                        pstmt.setString(counter, "%" + value + "%");
                     }
                     counter++;
                 }
