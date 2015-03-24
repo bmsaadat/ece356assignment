@@ -264,7 +264,7 @@ public class UserDBAO {
             resultSet.next();
             ret = new UserData();
                         
-            if(resultSet.first()) {
+            if(!resultSet.getString("numRecords").equals("0")) {
                 ret.userName = resultSet.getString("username");
                 ret.firstName = resultSet.getString("first_name");
                 ret.lastName = resultSet.getString("last_name");
@@ -493,13 +493,16 @@ public class UserDBAO {
             String query; 
             if(doctorParam.containsKey("reviewByFriends") && doctorParam.get("reviewByFriends").equals("yes"))
             {
-                query = "select * from " +
-                            "(select recieved_username as username from friend where sent_username = '"+user+"' AND isAccepted = true " +
+                
+                query = "select * from doctorSearchView left join review on doctorSearchView.doc_spec_username = review.doc_username where patient_username in "+ 
+                            "(select friend.sent_username as friend " +
+                            "from friend where friend.isAccepted = 1 AND friend.recieved_username = '%"+user+"%'" +
                             "union " +
-                            "select sent_username as username from friend where recieved_username = '"+user+"' AND isAccepted = true ) " +
-                            "as friends inner join doctorSearchView on doctorSearchView.patient_username = friends.username "
-                            ;
-                   // pstmt = con.prepareStatement(query);
+                            "select friend.recieved_username as friend " +
+                            "from friend where friend.isAccepted = 1 AND friend.sent_username = '%"+user+"%')" ; 
+                
+                doctorParam.remove("reviewByFriends"); 
+                                               // pstmt = con.prepareStatement(query);
             }
             else
             {
@@ -531,6 +534,10 @@ public class UserDBAO {
                         query = query + " " + key + " = ?";
                         query += " AND"; 
                         h1.put(counter, counter); 
+                    }
+                    else if(keys.equals("reviewByFriends"))
+                    {
+                        
                     }
                     else
                     {
